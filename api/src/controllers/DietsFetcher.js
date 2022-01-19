@@ -16,14 +16,13 @@ const DB_DietTypes = [
     'Whole30'
 ]
 
-function DT_Preloader(){
+async function DietTypes_Preloader(){
     DB_DietTypes.forEach(diet=>{
-        DietTypes.findOrCreate({
+        await DietTypes.findOrCreate({
             where: {
                 name: {[Op.like]: `%${diet.toLowerCase()}%`}
             },
         })
-        
     })
 }
 
@@ -33,13 +32,13 @@ async function fetchDiets(){
 }
 
 async function createDiet(diet){
-    DietTypes.findOrCreate({
-        where: {name:diet}
+    await DietTypes.findOrCreate({
+        where: {name:diet.toLowerCase()}
     })
 }
 
 module.exports = {
-    DT_Preloader,
+    DietTypes_Preloader,
     fetchDiets,
     createDiet
 }

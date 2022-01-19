@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
       primaryKey: true
     },
     name: {
-      type: DataTypes.TEXT('medium'),
+      type: DataTypes.TEXT,
       allowNull: false
     },
   })

@@ -19,11 +19,12 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
-const { DietTypes } = require('./src/models/DietTypes')
+const { DietTypes_Preloader } = require('./src/controllers/DietsFetcher.js')
 
 // Syncing all the models at once.
 conn.sync({ force: true }).then(() => {
   server.listen(3001, () => {
+    DietTypes_Preloader()
     console.log('%s listening at 3001'); // eslint-disable-line no-console
   });
 });

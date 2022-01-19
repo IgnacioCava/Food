@@ -1,34 +1,35 @@
-const db = require("../db");
 const { Recipes, DietTypes } = require("../db");
 const { API_KEY } = process.env;
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op; //Sequelize exposes symbol operators that can be used for to create more complex comparisons 
                         // https://sequelize.org/v5/manual/querying.html
-
-console.log(DietTypes, Recipes)
+                       //  
 
 async function fetchByApiQuery(query){
     try{
         return await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&addRecipeInformation=true&apiKey=${API_KEY}&number=9`)
         .then(response => response.json())
         .then(json => {
-            if(json.results){
-                let recs = []
-                json.results.map(recipe=>{
-                    recs.push({
-                        id: recipe.id,
-                        title: recipe.title,
-                        image: recipe.image,
-                        resume: recipe.summary,
-                        dietTypes: recipe.diets,
-                        score: recipe.spoonacularScore,
-                        healthScore: recipe.healthScore,
-                        time: recipe.readyInMinutes,
-                        dishTypes: recipe.dishTypes,
+            if(Object.keys(json).includes('totalResults')){
+                if(json.totalResults){
+                    let recs = []
+                    json.results.map(recipe=>{
+                        recs.push({
+                            id: recipe.id,
+                            name: recipe.title,
+                            image: recipe.image,
+                            resume: recipe.summary,
+                            dietTypes: recipe.diets,
+                            score: recipe.spoonacularScore,
+                            healthScore: recipe.healthScore,
+                            time: recipe.readyInMinutes,
+                            dishTypes: recipe.dishTypes
+                        })
                     })
-                })
-                return recs
-            }
+                    return recs
+                } else return false
+            } else return 'Exceeded daily API calls'
+
         })
     } catch (err) {
         return 'Error found while fetching API by query, please try again'
@@ -41,9 +42,10 @@ async function fetchByApiId(id){
         return await fetch(`https://api.spoonacular.com/recipes/${id}/information?includeNutrition=true&apiKey=${API_KEY}`)
         .then(response => response.json())
         .then(json => {
-            return {
+            if(json.code) return false
+            else return {
                 id: json.id,
-                title: json.title,
+                name: json.title,
                 image: json.image,
                 resume: json.summary,
                 dietTypes: json.diets,
@@ -64,7 +66,7 @@ async function fetchByApiId(id){
 }
 
 async function fetchByDBQuery(query){
-    return Recipes.findAll({
+    const rec = await Recipes.findAll({
         where: {
             name: {[Op.like]: `%${query}%`} // Explanation at top of file
         },
@@ -76,10 +78,11 @@ async function fetchByDBQuery(query){
             }
         }
     });
+    rec.length?rec:false
 }
 
 async function fetchByDBId(id){
-    return Recipes.findByPk(id, {
+    const rec = await Recipes.findByPk(id, {
         include: {
             model: DietTypes,
             attributes: ['name'],
@@ -88,10 +91,11 @@ async function fetchByDBId(id){
             }
         }
     });
+    rec.length?rec:false
 }
 
 async function fetchWholeDB(){
-    return Recipes.findAll({
+    const rec = await Recipes.findAll({
         include: {
             model: DietTypes,
             attributes: ['name'],
@@ -100,6 +104,7 @@ async function fetchWholeDB(){
             }
         }
     });
+    rec.length?rec:false
 }
 
 module.exports = {
