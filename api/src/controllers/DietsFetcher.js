@@ -3,7 +3,7 @@ const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 const DB_DietTypes = [
-    'Gluten Free', 
+    'Gluten Free',
     'Ketogenic', 
     'Vegetarian',
     'Lacto-Vegetarian', 
@@ -18,9 +18,10 @@ const DB_DietTypes = [
 
 async function DietTypes_Preloader(){
     DB_DietTypes.forEach(diet=>{
-        await DietTypes.findOrCreate({
+        DietTypes.findOrCreate({
             where: {
-                name: {[Op.like]: `%${diet.toLowerCase()}%`}
+                name: diet
+                //name: {[Op.like]: `%${diet.toLowerCase()}%`}
             },
         })
     })

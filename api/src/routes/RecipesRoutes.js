@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const { Recipes, DietTypes } = require('../db');
 const { DietTypes_Preloader, createDiet } = require('../controllers/DietsFetcher')
 const { fetchByApiQuery,
         fetchByApiId,
@@ -7,9 +6,9 @@ const { fetchByApiQuery,
         fetchByDBId,
         fetchWholeDB } = require('../controllers/RecipesFetcher.js');
 
-
 const router = Router();
 
+//GET
 //By query
 router.get('/', async (req,res)=>{
     const { name } = req.query
@@ -52,16 +51,4 @@ router.get('/:id', async (req,res)=>{
     }
 })
 
-//POST recipe
-router.post('/', async (req,res)=>{
-    try {
-        const { name, resume, dietTypes, score, healthScore, time, dishTypes, steps } = req.body
-
-        const createdRecipe = await Recipes.create({
-            name, resume, dietTypes, score, healthScore, time, dishTypes, steps
-        })
-        return res.json({createdRecipe})
-    } catch (error) {
-        next(error)
-    };
-})
+module.exports = router
