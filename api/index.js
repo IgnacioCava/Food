@@ -25,19 +25,5 @@ const { DietTypes } = require('./src/models/DietTypes')
 conn.sync({ force: true }).then(() => {
   server.listen(3001, () => {
     console.log('%s listening at 3001'); // eslint-disable-line no-console
-
-    DietTypes.bulkCreate([
-    { name: "Whole30" },
-    { name: "Gluten Free" },
-    { name: "Ketogenic" },
-    { name: "Vegetarian" },
-    { name: "Lacto-Vegetarian" },
-    { name: "Ovo-Vegetarian" },
-    { name: "Pescetarian" },
-    { name: "Paleo" },
-    { name: "Primal" },
-    { name: "Low FODMAP" },
-    { name: "Whole30"
-    }]).then(()=>console.log('Preloaded default diets'));
   });
 });
