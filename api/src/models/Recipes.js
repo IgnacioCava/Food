@@ -18,6 +18,10 @@ module.exports = (sequelize) => {
       type: DataTypes.TEXT,
       allowNull: false
     },
+    dietTypes: {
+      type: DataTypes.STRING,
+      allowNull:true
+    },
     score: {
       type: DataTypes.INTEGER,
       allowNull: true
@@ -26,9 +30,17 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    steps: {
+    time: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    dishTypes: {
       type: DataTypes.TEXT,
+      allowNull: true
+    },
+    steps: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false
-    }
-  });
+    },
+  }); 
 };
