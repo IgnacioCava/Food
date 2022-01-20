@@ -1,4 +1,5 @@
 const { Recipes, DietTypes } = require("../db");
+const fetch = require("node-fetch")
 const { API_KEY } = process.env;
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op; //Sequelize exposes symbol operators that can be used for to create more complex comparisons 
@@ -7,7 +8,7 @@ const Op = Sequelize.Op; //Sequelize exposes symbol operators that can be used f
 
 async function fetchByApiQuery(query){
     try{
-        return await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&addRecipeInformation=true&apiKey=${API_KEY}&number=9`)
+        return await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&addRecipeInformation=true&apiKey=${API_KEY}&number=1`)
         .then(response => response.json())
         .then(json => {
             if(Object.keys(json).includes('totalResults')){

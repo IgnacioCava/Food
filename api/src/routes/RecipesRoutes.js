@@ -15,23 +15,24 @@ router.get('/', async (req,res)=>{
 
     if(!name||name.trim().length===0) return res.status(200).json({message:'Queries must not be empty. Please send a valid request'})
 
-    let ApiRecipes = fetchByApiQuery(name)
-    let DBRecipes = fetchByDBQuery(name)
+    let ApiRecipes = await fetchByApiQuery(name)
+    let DBRecipes = await fetchByDBQuery(name)
     let foundRecipes = []
-
-    if(ApiRecipes==='Exceeded daily API calls') return res.status(200).json({message:'Exceeded daily API calls'})
-
+    
+    //if(typeof ApiRecipes==='object') return res.status(200).json({message:'Error found while fetching API by query, please try again'})
+    
     if(ApiRecipes){
         ApiRecipes.forEach(recipe=>{
-            createDiet(recipe.DietTypes)
+            createDiet(recipe.dietTypes)
         })
-        found.push(ApiRecipes)
+        foundRecipes.push(ApiRecipes)
     }
     
-    DBRecipes?found.push(DBRecipes):null
+    DBRecipes?foundRecipes.push(DBRecipes):null
 
     if(!foundRecipes.length) return res.status(200).json({message:'No recipes found'})
-    else return res.json({foundRecipes})
+    
+    else return res.json(foundRecipes.flat())
 })
 
 //By id
@@ -41,13 +42,16 @@ router.get('/:id', async (req,res)=>{
     if(!id) return res.status(200).json({message:'No ID was received'})
 
     if(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id)){
-        let rec=fetchByDBId(id)
+        let rec = await fetchByDBId(id)
         if(!rec) return res.status(200).json({message:'No recipe found matching received ID'})
         else return res.status(200).send({rec})
     } else {
-        let rec = fetchByApiId(id)
+        let rec = await fetchByApiId(id)
         if(!rec) return res.status(200).json({message:'No recipe found matching received ID'})
-        else return res.json({rec})
+        else {
+            createDiet(rec.dietTypes)
+            return res.json({rec})
+        }
     }
 })
 

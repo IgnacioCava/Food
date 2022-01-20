@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     dietTypes: {
-      type: DataTypes.STRING,
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull:true
     },
     score: {
@@ -42,5 +42,11 @@ module.exports = (sequelize) => {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false
     },
+    
+  },
+  {
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false
   }); 
 };

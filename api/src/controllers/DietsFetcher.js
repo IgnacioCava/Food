@@ -9,7 +9,7 @@ const DB_DietTypes = [
     'Lacto-Vegetarian', 
     'Ovo-Vegetarian',
     'Vegan',
-    'Pescetarian', 
+    'Pescatarian', 
     'Paleo', 
     'Primal', 
     'Low FODMAP',
@@ -32,10 +32,13 @@ async function fetchDiets(){
     return diets
 }
 
-async function createDiet(diet){
-    await DietTypes.findOrCreate({
-        where: {name:diet.toLowerCase()}
+async function createDiet(dietTypes){
+    dietTypes.forEach(diet=>{
+        DietTypes.findOrCreate({
+            where: {name:diet.charAt(0).toUpperCase()+diet.slice(1)}
+        })
     })
+    
 }
 
 module.exports = {
