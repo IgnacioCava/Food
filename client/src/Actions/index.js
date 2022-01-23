@@ -8,13 +8,13 @@ export const LOCALHOST = 'http://localhost:3001'
 
 export function simpleSearch(query){
     return function(dispatch){
-        return fetch(`${LOCALHOST}/api/recipes?name=${query}`)
+        return fetch(`${LOCALHOST}/recipes?name=${query}`)
         .then(response => response.json())
         .then(json =>{
             console.log(json)
             dispatch({
                 type: SIMPLE_SEARCH,
-                payload: json.foundRecipes
+                payload: json
             })
         })
     }
@@ -22,7 +22,7 @@ export function simpleSearch(query){
 
 export function detailedSearch(id){
     return function(dispatch){
-        return fetch(`${LOCALHOST}/api/recipes/${id}`)
+        return fetch(`${LOCALHOST}/recipes/${id}`)
         .then(response => response.json())
         .then(json =>{
             dispatch({
@@ -35,7 +35,7 @@ export function detailedSearch(id){
 
 export function getDietTypes(){
     return function(dispatch){
-        return fetch(`${LOCALHOST}/api/types`)
+        return fetch(`${LOCALHOST}/types`)
         .then(response => response.json())
         .then(json =>{
             dispatch({

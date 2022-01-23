@@ -23,9 +23,13 @@ export default function Search(){
 }
 
 const SearchWrapper = styled.div`
-height: 25%;
+height: 100%;
+box-sizing: border-box;
 display: flex;
-flex-direction: column;
+flex-direction: row;
 justify-content: center;
 border:3px solid black;
+padding-left: 20px;
+padding-right: 20px;
+align-items: center;
 `

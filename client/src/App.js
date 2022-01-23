@@ -6,6 +6,7 @@ import SearchBar from './Components/SearchBar'
 import Welcome from './Components/Welcome';
 import styled from 'styled-components'
 import Indexer from './Components/Indexer'
+import Detail from './Components/Detail'
 
 function App() {
   return (
@@ -23,11 +24,15 @@ function App() {
           element={
             <AppWrapper>
               <Controls>
-                <SearchBar/>
                 <Indexer/>
+                <SearchBar/>
               </Controls>
               <RecipesHolder/>
             </AppWrapper>}
+        />
+        <Route 
+          path='/home/:id'
+          element={<Detail/>}
         />
       </Routes>
     </div>
@@ -38,7 +43,7 @@ export default App;
 
 const AppWrapper = styled.div`
 display: flex;
-flex-direction: row-reverse;
+flex-direction: column;
 position: absolute;
 height: 100vh;
 width: 100vw;
@@ -46,5 +51,8 @@ width: 100vw;
 
 const Controls = styled.div`
 display: flex;
-flex-direction: column;
+flex-direction: row;
+align-items: center;
+justify-content: space-evenly;
+height: 15%;
 `
