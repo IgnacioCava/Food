@@ -15,7 +15,7 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     resume: {
-      type: DataTypes.TEXT,
+      type: DataTypes.TEXT('long'),
       allowNull: false
     },
     dietTypes: {
@@ -31,11 +31,11 @@ module.exports = (sequelize) => {
       allowNull: true
     },
     time: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: true
     },
     dishTypes: {
-      type: DataTypes.TEXT,
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true
     },
     steps: {

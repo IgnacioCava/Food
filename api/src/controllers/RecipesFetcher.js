@@ -54,10 +54,9 @@ async function fetchByApiId(id){
                 healthScore: json.healthScore,
                 dishTypes: json.dishTypes,
                 steps: json.analyzedInstructions[0]?.steps.map(pos=>{
-                    return {
-                        number: pos.number,
-                        step: pos.step
-                    }
+                    
+                        return pos.step
+                    
                 })
             }
         })
@@ -69,30 +68,33 @@ async function fetchByApiId(id){
 async function fetchByDBQuery(query){
     const rec = await Recipes.findAll({
         where: {
-            name: {[Op.like]: `%${query}%`} // Explanation at top of file
+            name: {[Op.iLike]: `%${query}%`} // Explanation at top of file
         },
-        include: {
-            model: DietTypes,
-            attributes: ['name'],
-            through: {
-                attributes: [],
-            }
-        }
+        // include: {
+        //     model: DietTypes,
+        //     attributes: ['name'],
+        //     through: {
+        //         attributes: [],
+        //     }
+        // }
     });
-    rec.length?rec:false
+    if(rec.length) return rec
+    return false
 }
 
 async function fetchByDBId(id){
-    const rec = await Recipes.findByPk(id, {
-        include: {
-            model: DietTypes,
-            attributes: ['name'],
-            through: {
-                attributes: [],
-            }
-        }
-    });
-    rec.length?rec:false
+    const rec = await Recipes.findByPk(id//, {
+        // include: {
+        //     model: DietTypes,
+        //     attributes: ['name'],
+        //     through: {
+        //         attributes: [],
+        //     }
+        // }
+    /*}*/);
+    
+    if(Object.keys(rec).length) return rec
+    return false
 }
 
 async function fetchWholeDB(){

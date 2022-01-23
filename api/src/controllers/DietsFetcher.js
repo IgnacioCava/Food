@@ -33,11 +33,12 @@ async function fetchDiets(){
 }
 
 async function createDiet(dietTypes){
-    dietTypes.forEach(diet=>{
+    if(dietTypes)
+    {dietTypes.forEach(diet=>{
         DietTypes.findOrCreate({
             where: {name:diet.charAt(0).toUpperCase()+diet.slice(1)}
         })
-    })
+    })}
     
 }
 
