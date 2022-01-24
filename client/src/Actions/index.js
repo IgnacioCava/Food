@@ -1,9 +1,12 @@
-export const SIMPLE_SEARCH = 'SIMPLE_SEARCH'
-export const DETAILED_SEARCH = 'DETAILED_SEARCH'
+export const SIMPLE_SEARCH='SIMPLE_SEARCH'
+export const DETAILED_SEARCH='DETAILED_SEARCH'
 export const GET_DIET_TYPES='GET_DIET_TYPES'
 export const FILTER_BY_DIET_TYPE='FILTER_BY_DIET_TYPE'
 export const FILTER_BY_ALPHA='FILTER_BY_ALPHA'
 export const FILTER_BY_SCORE='FILTER_BY_SCORE'
+export const NEXT_PAGE='NEXT_PAGE'
+export const PREVIOUS_PAGE='PREVIOUS_PAGE'
+export const CURRENT_PAGE='CURRENT_PAGE'
 export const LOCALHOST = 'http://localhost:3001'
 
 export function simpleSearch(query){
@@ -86,5 +89,36 @@ export function filterByScore(payload){
     return {
         type:FILTER_BY_SCORE,
         payload
+    }
+}
+
+let page=0;
+
+export function currentPage(){
+    return{
+        type:CURRENT_PAGE,
+        payload:page
+    }
+}
+
+export function nextPage(){
+    //console.log(page)
+    return{
+        type:NEXT_PAGE,
+        payload:++page
+    }
+}
+
+export function previousPage(){
+    //console.log(page)
+    if(page===0){
+        return{
+            type:CURRENT_PAGE,
+            payload:page
+        }
+    }
+    else return{
+        type:PREVIOUS_PAGE,
+        payload:--page
     }
 }

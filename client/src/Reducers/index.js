@@ -1,10 +1,12 @@
 import { SIMPLE_SEARCH, DETAILED_SEARCH, GET_DIET_TYPES, FILTER_BY_DIET_TYPE,
-    FILTER_BY_ALPHA, FILTER_BY_SCORE } from '../Actions'
+    FILTER_BY_ALPHA, FILTER_BY_SCORE, NEXT_PAGE, PREVIOUS_PAGE, CURRENT_PAGE } from '../Actions'
 
 const initialState = {
     foundRecipes: [],
     currentRecipeDetail: [],
     dietTypes:[],
+    currentPage:[]
+
 }
 
 export default function reducer(state=initialState, action){
@@ -30,6 +32,15 @@ export default function reducer(state=initialState, action){
                 if(a.score>b.score) return 1
                 return 0
             })}
+        
+        case NEXT_PAGE:
+            return {...state, currentPage: state.foundRecipes.slice(action.payload*9,action.payload*9+9)}
+
+        case PREVIOUS_PAGE:
+            return {...state, currentPage: state.foundRecipes.slice(action.payload*9,action.payload*9+9)}
+
+        case CURRENT_PAGE:
+            return {...state, currentPage: state.foundRecipes.slice(action.payload*9,action.payload*9+9)}
 
         default:
             return state

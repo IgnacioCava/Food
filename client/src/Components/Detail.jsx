@@ -17,22 +17,18 @@ export default function Detail(){
     let {id} = useParams()
     if(!isNaN(id)) id=Number(id)
 
-    const thisDetail = useSelector(state=>state.currentRecipeDetail.find(r=>r.id===id))
+    const thisDetail = useSelector(state=>state.currentRecipeDetail.find(r=>r?.id===id))
     console.log(thisDetail)
-    useEffect(()=>{
-        dispatch(detailedSearch(id))
-    }, [])
-
-    let body = document.getElementsByTagName('body')
-    console.log(body)
-    //body.addEventListener()
+    
+    if(!thisDetail) dispatch(detailedSearch(id))
+   
 
     let steps=document.getElementsByClassName('step')
     
     useEffect(()=>{
         let res = document.getElementById('resume')
-        console.log(res)
         if(res)res.innerHTML=thisDetail.resume
+
         Array.from(steps).forEach(step=>{
             step.addEventListener('mouseover',()=>{
                 if(step.style.backgroundColor==='green') return
@@ -50,12 +46,6 @@ export default function Detail(){
     })
 
     
-
-    
-    
-    
-    
-
     if(thisDetail){
         return(
             <Background>
@@ -123,19 +113,46 @@ export default function Detail(){
             </DetailWrapper>
             </Background>
         )
-    } else return null
+    } else return (
+        <Background>
+            <DetailWrapper>
+                <NoBack>
+                    <h1>Sorry, we couldn't find what you're searching for!</h1>
+                    <Link to='/home'>Return home</Link>
+                </NoBack>
+            </DetailWrapper>
+        </Background>
+    )
 }
 
+const NoBack = styled.div`
+    box-sizing: border-box;
+    margin:auto;
+    transition: .3s;
+    
+    border-radius: 50%;
+    a{
+        color:#5667ffb5;
+        transition: .3s;
+        border-radius: 50%;
+        text-decoration: none;
+    }
+    a:hover{
+        padding:5px;
+        border-radius: 10px;
+        background-color: #2b369bb1;
+        color:white;
+    }
+`
+
 const Back = styled.div`
-position: absolute;
-display: inline-block;
-width: 10px;
-overflow:hidden;
-//text-overflow: clip;
-white-space: nowrap;
-left:7px;
-//line-height: 30px;
-transition:.7s;
+    position: absolute;
+    display: inline-block;
+    width: 10px;
+    overflow:hidden;
+    white-space: nowrap;
+    left:7px;
+    transition:.7s;
 a{
     text-decoration: none;
     color:white;
@@ -143,10 +160,9 @@ a{
 :hover{
     background-color:#41558b90;
     width: 50px;
-    padding: 0 5px 0 5px;
+    padding: 0 7px 0 7px;
     border-radius: 6px;
 }
-
 `
 
 const ID = styled.span`
@@ -352,4 +368,3 @@ img{
     }
 }
 `
-
