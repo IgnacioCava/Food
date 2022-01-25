@@ -27,7 +27,7 @@ function App() {
               <Controls>
                 <Indexer/>
                 <SearchBar/>
-                <Create><Link to='/create'>asdasdasd</Link></Create>
+                <Create><Link to='/create'>Create</Link></Create>
               </Controls>
               <RecipesHolder/>
             </AppWrapper>}

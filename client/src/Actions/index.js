@@ -51,7 +51,7 @@ export function getDietTypes(){
 
 export function createRecipe(recipe) {
     return async function() {
-        return await fetch(`${LOCALHOST}/api/recipe`,{
+        return await fetch(`${LOCALHOST}/recipe`,{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -61,15 +61,17 @@ export function createRecipe(recipe) {
                 name:recipe.name, 
                 resume:recipe.resume, 
                 dietTypes:recipe.dietTypes, 
-                score:recipe.score, 
-                healthScore:recipe.healthScore, 
-                time:recipe.time, 
+                score:Number(recipe.score), 
+                healthScore:Number(recipe.healthScore), 
+                time:Number(recipe.time), 
                 dishTypes:recipe.dishTypes, 
                 steps:recipe.steps
             })
         })
     }
 }
+
+
 
 export function filterByDietType(payload) {
     return {
