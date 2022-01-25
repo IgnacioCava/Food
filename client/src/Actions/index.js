@@ -7,6 +7,7 @@ export const FILTER_BY_SCORE='FILTER_BY_SCORE'
 export const NEXT_PAGE='NEXT_PAGE'
 export const PREVIOUS_PAGE='PREVIOUS_PAGE'
 export const CURRENT_PAGE='CURRENT_PAGE'
+export const FILTER='FILTER'
 export const LOCALHOST = 'http://localhost:3001'
 
 export function simpleSearch(query){
@@ -71,26 +72,20 @@ export function createRecipe(recipe) {
     }
 }
 
+export function filter(sort, by) {
+    if(sort==='sortName') return {
+        type: FILTER_BY_ALPHA,
+        payload: by
+    }
 
-
-export function filterByDietType(payload) {
-    return {
+    if(sort==='sortDiet') return {
         type: FILTER_BY_DIET_TYPE,
-        payload
+        payload: by
     }
-};
 
-export function filterByAlpha(payload){
-    return {
-        type:FILTER_BY_ALPHA,
-        payload
-    }
-}
-
-export function filterByScore(payload){
-    return {
-        type:FILTER_BY_SCORE,
-        payload
+    if(sort==='sortScore') return {
+        type: FILTER_BY_SCORE,
+        payload: by
     }
 }
 

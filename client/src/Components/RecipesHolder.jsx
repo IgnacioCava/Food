@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import { useSelector, useDispatch} from 'react-redux'
 import Recipe from './Recipe'
 import styled from 'styled-components'
@@ -13,7 +13,7 @@ export default function RecipesHolder(){
 
     useEffect(()=>{
         if(!found.message) dispatch(currentPage())
-    },[found])
+    },[found, dispatch])
 
     if(recipes){
         return(
@@ -23,14 +23,7 @@ export default function RecipesHolder(){
                     No recipes found
                 </NoRec>
                 :
-                <><HorizontalSeparator>
-                    <HS/>
-                    <HS/>
-                </HorizontalSeparator>
-                <VerticalSeparator>
-                    <VS/>
-                    <VS/>
-                </VerticalSeparator>
+                <>
                 <Recipes>
                     {recipes.map(recipe=>
                         <Recipe
@@ -44,7 +37,7 @@ export default function RecipesHolder(){
                     <button type='button' id='a' onClick={()=>{
                         dispatch(previousPage())
                     }}>{'<'}</button>
-                    <button type='button' onClick={()=>{
+                    <button type='button' id='b' onClick={()=>{
                         dispatch(nextPage())
                     }}>{'>'}</button>
                 </Paginator></>}
@@ -65,8 +58,25 @@ font-size: 30px;
 `
 
 const Paginator = styled.div`
-    position: absolute;
-    bottom:0;
+    *{
+        position: fixed;
+        bottom:0;
+        padding:30px;
+        background-color:#2a2a2af0;
+        border: 0;
+        color:white;
+        z-index: 2;
+        font-weight: bold;
+        font-size:large;
+    }
+    #a{
+        left:0;
+        border-radius:0 10px 0 0;
+    }
+    #b{
+        right:0;
+        border-radius:10px 0 0 0;
+    }
 `
 
 const Recipes = styled.div`
@@ -75,42 +85,11 @@ const Recipes = styled.div`
     align-content: flex-start;
     justify-content: flex-start;
     width: 100%;
-`
-
-const HorizontalSeparator = styled.div`
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    justify-content: space-evenly;
-`
-
-const VerticalSeparator = styled.div`
-    display: flex;
-    flex-direction: row;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    justify-content: space-evenly;
-`
-
-const HS = styled.hr`
-    width: 100%;
-    height: 1px;
-    background-color: #ff9100;
-    border-right: 0;
-    border-left: 0;
-    margin:0;
-`
-
-const VS = styled.hr`
-    height: 100%;
-    width: 1px;
-    background-color: #ff9100;
-    border-top: 0;
-    border-bottom: 0;
-    margin:0;
+    
+    @media (max-width:700px){
+        flex-direction: column;
+        flex-wrap: nowrap;
+    } 
 `
 
 const Holder = styled.div`
@@ -118,9 +97,18 @@ const Holder = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    height: 100%;
     width:100%;
-    background-color: #be853b;
+    height: 100%;
+    overflow: auto;
+    ::-webkit-scrollbar{
+        background-color: transparent;
+        }
+    ::-webkit-scrollbar-thumb{
+        background-color: #241711;
+        border:2px solid #66480d;
+        border-right:0;
+        border-radius: 7px 0 0 7px;
+    }
     p {
         margin:0;
     }

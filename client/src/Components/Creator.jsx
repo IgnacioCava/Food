@@ -9,8 +9,6 @@ export default function Creator(){
 
     const dispatch = useDispatch()
 
-    const [diets,setDiets] = useState([])
-
     const [recData, setRecData] = useState({
     name: '',
     resume: '',
@@ -24,14 +22,47 @@ export default function Creator(){
 
     const [errors, setErrors] = useState('')
 
+    function animateError(type){
+        if(!type){
+            document.getElementById('error').style.width='250px'
+            document.getElementById('error').style.borderLeft='10px solid red'
+            if(document.getElementById('error')){
+                setTimeout(()=>{
+                    document.getElementById('error').style.border='0px solid red'
+                    document.getElementById('error').style.width='0px'
+                },2000)
+            }
+            return
+        }
+            document.getElementById(type).style.transition='.2s'
+            document.getElementById(type).style.backgroundColor='red'
+            document.getElementById('error').style.width='300px'
+            document.getElementById('error').style.borderLeft='10px solid red'
+            
+                setTimeout(()=>{
+                    document.getElementById(type).style.transition='1s'
+                    document.getElementById(type).style.backgroundColor='white'
+                },500)
+                setTimeout(()=>{
+                    if(document.getElementById('error')){
+                        document.getElementById('error').style.border='0px solid red'
+                        document.getElementById('error').style.width='0px'
+                    }
+                },2000)
+            
+            
+    }
+
     function validate(input, target){
         if(input.trim()==='') {
             setErrors('Input cannot be empty')
+            animateError()
             return false
         }
         
         if(target.includes(input.trim())){
-            setErrors('You have already added this')
+            setErrors('You have already added this tag')
+            animateError()
             return false
         }
         setErrors('')
@@ -41,6 +72,7 @@ export default function Creator(){
     function scoreValidate(input){
         if(input>100||input<0){
             setErrors('Scores must range between 0 and 100')
+            animateError()
             return false
         }
         return true
@@ -49,6 +81,7 @@ export default function Creator(){
     function timeValidate(input){
         if(input<0){
             setErrors('Please assign a valid preparation time')
+            animateError()
             return false
         }
         return true
@@ -57,58 +90,27 @@ export default function Creator(){
     function formValidate(){
         if(recData.name.trim()===''){
             setErrors('Please name your recipe')
-            document.getElementById('title').style.transition='.2s'
-            document.getElementById('title').style.backgroundColor='red'
-            document.getElementById('error').style.width='200px'
-            document.getElementById('error').style.borderLeft='10px solid red'
-            setTimeout(()=>{
-                document.getElementById('title').style.transition='1s'
-                document.getElementById('title').style.backgroundColor='white'
-            },500)
-            setTimeout(()=>{
-                document.getElementById('error').style.border='0px solid red'
-                document.getElementById('error').style.width='0px'
-            },2000)
+            animateError('title')
             return false 
         }
         if(recData.resume.trim()===''){
             setErrors('Please summarize your recipe')
-            document.getElementById('resumeText').style.transition='.2s'
-            document.getElementById('resumeText').style.backgroundColor='red'
-            document.getElementById('error').style.width='250px'
-            document.getElementById('error').style.borderLeft='10px solid red'
-            setTimeout(()=>{
-                document.getElementById('resumeText').style.transition='1s'
-                document.getElementById('resumeText').style.backgroundColor='white'
-            },500)
-            setTimeout(()=>{
-                document.getElementById('error').style.border='0px solid red'
-                document.getElementById('error').style.width='0px'
-            },2000)
+            animateError('resumeText')
             return false
         }
         if(!recData.steps.length){
             setErrors('Please explain how to make your recipe')
-            document.getElementById('steps').style.transition='.2s'
-            document.getElementById('steps').style.backgroundColor='lightred'
-            document.getElementById('error').style.width='300px'
-            document.getElementById('error').style.borderLeft='10px solid red'
-            setTimeout(()=>{
-                document.getElementById('steps').style.transition='1s'
-                document.getElementById('steps').style.backgroundColor='white'
-            },500)
-            setTimeout(()=>{
-                document.getElementById('error').style.border='0px solid red'
-                document.getElementById('error').style.width='0px'
-            },2000)
+            animateError('steps')
             return false
         }
         setErrors('Recipe created')
         document.getElementById('error').style.width='150px'
         document.getElementById('error').style.borderLeft='10px solid green'
         setTimeout(()=>{
-            document.getElementById('error').style.border='0px solid green'
-            document.getElementById('error').style.width='0px'
+            if(document.getElementById('error')){
+                document.getElementById('error').style.border='0px solid green'
+                document.getElementById('error').style.width='0px'
+            }
         },2000)
         return true
     }
@@ -132,12 +134,9 @@ export default function Creator(){
                 [e.target.name]: e.target.value
             });
         }
-            
     }
 
     useEffect(()=>{
-        console.log(recData)
-        console.log(errors)
     },[errors])
     
     return( 
@@ -146,10 +145,11 @@ export default function Creator(){
             <GoBack><Link to='/home'>Home</Link></GoBack>
             <Error id='error'>{errors}</Error>
             <Holder>
-                <form onSubmit={(event)=>{
+                <form onkeydown="return event.key != 'Enter';" onKeyPress={event=>{
+                    event.key === 'Enter' && event.preventDefault();
+                }} onSubmit={(event)=>{
                     event.preventDefault()
                     if(formValidate()) dispatch(createRecipe(recData))
-
                 }}>
                     
                     <InputHolder>
@@ -162,61 +162,63 @@ export default function Creator(){
                     <textarea type="text" name='resume' id='resumeText' style={{resize:'none'}} value={recData.resume} onChange={handleInputChange} />
                     </AreaHolder>
 
-                    <InputHolder onKeyPress={event=>{
-                        if(event.key === 'Enter'){
-                            if(validate(event.target.value, recData.dietTypes)){
-                                handleInputChange(event)
-                                let span = document.createElement('span')
-                                span.innerText=event.target.value
-                                document.getElementById('tags').prepend(span)
-                                event.target.value=''
+                    <Types>
+                        <InputHolder onKeyPress={event=>{
+                            if(event.key === 'Enter'){
+                                if(validate(event.target.value, recData.dietTypes)){
+                                    handleInputChange(event)
+                                    let span = document.createElement('span')
+                                    span.innerText=event.target.value
+                                    document.getElementById('tags').prepend(span)
+                                    event.target.value=''
+                                }
+                                else {
+                                    document.getElementById('dietTypes').style.transition='.2s'
+                                    document.getElementById('dietTypes').style.backgroundColor='red'
+                                    setTimeout(()=>{
+                                        document.getElementById('dietTypes').style.transition='1s'
+                                        document.getElementById('dietTypes').style.backgroundColor='white'
+                                    },500)
+                                    event.target.value=''
+                                }
                             }
-                            else {
-                                document.getElementById('dietTypes').style.transition='.2s'
-                                document.getElementById('dietTypes').style.backgroundColor='red'
-                                setTimeout(()=>{
-                                    document.getElementById('dietTypes').style.transition='1s'
-                                    document.getElementById('dietTypes').style.backgroundColor='white'
-                                },500)
-                                event.target.value=''
-                            }
-                        }
-                        }}>
-                        <label>Diet types</label>
-                    
-                        <Input id='dietTypes'>
-                            <input type="text" name='dietTypes'/>
-                            <div id='tags'></div>
-                        </Input>
-                    </InputHolder>
+                            }}>
+                            <label>Diet types</label>
+                        
+                            <Input id='dietTypes'>
+                                <input type="text" name='dietTypes'/>
+                                <div id='tags'></div>
+                            </Input>
+                        </InputHolder>
 
-                    <InputHolder onKeyPress={event=>{
-                        if(event.key === 'Enter'){
-                            if(validate(event.target.value, recData.dishTypes)){
-                                handleInputChange(event)
-                                let span = document.createElement('span')
-                                span.innerText=event.target.value
-                                document.getElementById('dishTags').prepend(span)
-                                event.target.value=''
+                        <InputHolder onKeyPress={event=>{
+                            if(event.key === 'Enter'){
+                                if(validate(event.target.value, recData.dishTypes)){
+                                    handleInputChange(event)
+                                    let span = document.createElement('span')
+                                    span.innerText=event.target.value
+                                    document.getElementById('dishTags').prepend(span)
+                                    event.target.value=''
+                                }
+                                else {
+                                    document.getElementById('dishTypes').style.transition='.2s'
+                                    document.getElementById('dishTypes').style.backgroundColor='red'
+                                    setTimeout(()=>{
+                                        document.getElementById('dishTypes').style.transition='1s'
+                                        document.getElementById('dishTypes').style.backgroundColor='white'
+                                    },500)
+                                    event.target.value=''
+                                }
                             }
-                            else {
-                                document.getElementById('dishTypes').style.transition='.2s'
-                                document.getElementById('dishTypes').style.backgroundColor='red'
-                                setTimeout(()=>{
-                                    document.getElementById('dishTypes').style.transition='1s'
-                                    document.getElementById('dishTypes').style.backgroundColor='white'
-                                },500)
-                                event.target.value=''
-                            }
-                        }
-                        }}>
-                        <label>Diet types</label>
-                    
-                        <Input id='dishTypes'>
-                            <input type="text" name='dishTypes'/>
-                            <div id='dishTags'></div>
-                        </Input>
-                    </InputHolder>
+                            }}>
+                            <label>Dish types</label>
+                        
+                            <Input id='dishTypes'>
+                                <input type="text" name='dishTypes'/>
+                                <div id='dishTags'></div>
+                            </Input>
+                        </InputHolder>
+                    </Types>
 
                     <Misc>
                         <InputHolder>
@@ -289,11 +291,11 @@ export default function Creator(){
                                 event.target.value=''
                             }
                             else {
-                                document.getElementById('steps').style.transition='.2s'
-                                document.getElementById('steps').style.backgroundColor='red'
+                                document.getElementById('steptags').style.transition='.2s'
+                                document.getElementById('steptags').style.backgroundColor='red'
                                 setTimeout(()=>{
-                                    document.getElementById('steps').style.transition='1s'
-                                    document.getElementById('steps').style.backgroundColor='transparent'
+                                    document.getElementById('steptags').style.transition='1s'
+                                    document.getElementById('steptags').style.backgroundColor='white'
                                 },500)
                                 event.target.value=''
                             }
@@ -307,9 +309,9 @@ export default function Creator(){
                         </AreaTags>
                     </AreaHolder>
 
-                    <InputHolder id='create'>
-                        <input type="submit" value="Create"/>
-                    </InputHolder>
+                    <Create type='submit' >
+                        Create
+                    </Create>
                     
                 </form>
             </Holder>
@@ -338,13 +340,20 @@ const CreatorWrapper = styled.div`
     align-items: center;
     width: 100%;
     height: 100%;
+    overflow: hidden;
     *{
-        overflow: hidden;
+        ::-webkit-scrollbar{
+        background-color: transparent;
+        }
+        ::-webkit-scrollbar-thumb{
+            background-color: #5c5cdb;
+            border-radius: 7px;
+        }
     }
 `
 
 const Error = styled.div`
-position: absolute;
+position: fixed;
 display: flex;
 justify-content: center;
 align-items: center;
@@ -357,22 +366,24 @@ z-index: 2;
 transition: 1s;
 white-space: nowrap;
 border-radius: 5px 0 0 5px;
+overflow: hidden;
+font-weight: bold;
 `
 
 const AreaTags = styled.div`
 display: flex;
-flex-direction: column;
+flex-direction: column-reverse;
 div#steptags{
     display: flex;
     flex-direction: column-reverse;
-    margin-bottom: 5px;
+    margin-bottom:40px;
+    background-color: white;
     span{
     display: flex;
     border:1px solid black;
     background-color:white;
-    padding:0 3px 3px 3px;
-    margin-right:5px;
-    margin-top:5px;
+    padding:3px;
+    margin:5px;
     border-radius: 5px;
     transition: .4s;
     :hover{
@@ -405,7 +416,6 @@ textarea#resumeText{
 const Misc = styled.div`
 display: flex;
 flex-direction: row;
-//width: 100%;
 >div{
     width:33.33%
 }
@@ -430,13 +440,14 @@ input{
     border:0px;
     outline: none;
     border-radius: 5px;
-    width: 100%;
+    width: 98%;
 }
 
 div{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    
     span{
     display: flex;
     max-height:50px;
@@ -461,26 +472,20 @@ flex-direction: column;
 width:100%;
 `
 
-const Holder = styled.div`
-    position: relative;
-    height: 90%;
+const Create = styled.button`
+    position:fixed;
+    bottom:5%;
+    left:5%;
     width: 90%;
-    background-color: #acacacb7;
-    border-radius: 15px;
-    display: flex;
-    overflow-x: hidden;
-    form{
-        width:100%
-    }
-    *{
-        outline: none;
-    }
-    ${InputHolder}#create{
-        position:fixed;
-        bottom:10px;
-        width: 90%;
-    }
+    padding: 10px ;
+    box-sizing: border-box;
+    border:0;
+    border-top:1px solid grey;
+    border-radius: 10px;
+    background-color: lightblue;
+    cursor:pointer;
 `
+
 
 const Backg = styled.div`
     position: absolute;
@@ -493,4 +498,40 @@ const Backg = styled.div`
     width: 100%;
     height: 100%;
     z-index: -1;
+`
+
+const Types = styled.div`
+width:100%;
+display:flex;
+flex-direction: row;
+${Input}#dishTypes{
+    border:1px solid grey;
+}
+${Input}#dietTypes{
+    border:1px solid grey;
+}
+
+@media (max-width:700px) {
+    flex-direction: column;
+
+}
+`
+
+const Holder = styled.div`
+    position: relative;
+    height: 90%;
+    width: 90%;
+    background-color: #acacacb7;
+    border-radius: 15px;
+    display: flex;
+    overflow:auto;
+    padding:3px;
+    box-sizing: border-box;
+    form{
+        width:100%
+    }
+    *{
+        outline: none;
+    }
+    
 `

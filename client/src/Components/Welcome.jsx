@@ -1,5 +1,4 @@
 import React from "react";
-import cook from './cooking.png'
 import button from './button.png'
 import styled from 'styled-components'
 import background from './backg.png'

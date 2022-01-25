@@ -24,12 +24,19 @@ export default function reducer(state=initialState, action){
             return {...state, foundRecipes: state.foundRecipes.filter(recipe=>recipe.dietTypes.includes(action.payload.toLowerCase()))}
             
         case FILTER_BY_ALPHA:
-            return {...state, foundRecipes: state.foundRecipes.sort((a, b) => a.firstname.localeCompare(b.firstname))}
-
+            if(action.payload==='Ascending') return {...state, foundRecipes: state.foundRecipes.sort((a, b) => a.firstname.localeCompare(b.firstname))}
+            else return {...state, foundRecipes: state.foundRecipes.sort((a, b) => !(a.firstname.localeCompare(b.firstname)))}
+        
         case FILTER_BY_SCORE:
+            if(action.payload==='Ascending') 
             return {...state, foundRecipes: state.foundRecipes.sort((a, b) => {
                 if(a.score<b.score) return -1
                 if(a.score>b.score) return 1
+                return 0
+            })}
+            else return {...state, foundRecipes: state.foundRecipes.sort((a, b) => {
+                if(a.score<b.score) return 1
+                if(a.score>b.score) return -1
                 return 0
             })}
         

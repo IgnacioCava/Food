@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from 'react'
+import { useSelector} from 'react-redux'
 import styled from 'styled-components'
-import { detailedSearch } from '../Actions'
 import { Link } from 'react-router-dom'
 import score from './score.png'
 import hScore from './healthScore.png'
@@ -22,19 +21,26 @@ export default function Recipe({id}){
                 <Title>{thisRecipe.name}</Title>
                 <Poster src={thisRecipe.image} alt='Img'/>
                 <Score>
+                    {thisRecipe.score?
                     <div>
                         <img src={score} alt='score'/>
                         {thisRecipe.score}
-                    </div> 
+                    </div>:null }
+                    
+                    {thisRecipe.healthScore?
                     <div>
-                        <img src={hScore} alt='hScore'/>
+                        <img src={hScore} alt='hscore'/>
                         {thisRecipe.healthScore}
-                    </div>
+                    </div>:null }
                 </Score>
+                {thisRecipe.time?
                 <Time>
-                    <img src={timer} alt='Ready in:'/>
-                    {thisRecipe.time} min
-                </Time>
+                    <div>
+                        <img src={timer} alt='Ready in:'/>
+                        {thisRecipe.time} min
+                    </div>
+                </Time>:null }
+                
                 <DietTypes>{thisRecipe.dietTypes.map(e=><Diet key={a++}>{e}</Diet>)}</DietTypes>
                 
             </Holder>  
@@ -46,9 +52,8 @@ const Holder = styled.div`
     position: relative;
     width: 30%;
     height: 30%;
-    max-height: 30vh;
-    margin-right:1.6%;
-    margin-left: 1.5%;
+    margin-right:1.5%;
+    margin-left: 1.4%;
     margin-top:1.3vh;
     margin-bottom: 1.3vh;
     display: flex;
@@ -57,6 +62,10 @@ const Holder = styled.div`
     justify-content: space-between;
     >*{
         position: absolute;
+    }
+    @media (max-width:700px){
+        width: 96.5%;
+        height: 300px
     }
 `
 
@@ -67,6 +76,8 @@ const Title = styled.p`
     padding:2px;
     background-color: #ffffffb0;
     border-radius: 0 5px 5px 0;
+    max-width: 90%;
+    overflow: hidden;
     `
     const Score = styled.div`
     right:0;
@@ -101,7 +112,7 @@ const Time = styled.div`
 `
 
 const Diet = styled.span`
-    background-color: #e4e4e46c;
+    background-color: #e4e4e4be;
     border-radius: 5px;
     padding: 3px;
     margin:3px;
@@ -113,10 +124,6 @@ const DietTypes = styled.div`
     justify-content: flex-start;
     flex-wrap: wrap;
     position: absolute;
-    bottom:0;
-`
-
-const DishTypes = styled.p`
     bottom:0;
 `
 

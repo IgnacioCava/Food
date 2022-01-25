@@ -50,7 +50,7 @@ export default function Detail(){
         return(
             <Background>
             <DetailWrapper>
-                <h2>{thisDetail.name}</h2>
+                <h2 style={{width: '100%', wordBreak:'break-word'}}>{thisDetail.name}</h2>
 
                 <DetailText>
                     <Poster>
@@ -66,6 +66,7 @@ export default function Detail(){
                                 {e}
                             </Diet>)}
                         </DietTypes>
+                        {thisDetail.dishTypes.length?<>
                         <p style={{textAlign:'left', margin:0}}> Best served as: </p>
                         <DietTypes>
                             {thisDetail.dishTypes.map(e=>
@@ -73,30 +74,32 @@ export default function Detail(){
                                 {e}
                             </Diet>)}
                         </DietTypes>
-
+                        </>:null}
                         <Scores>
-                            <div>
+                            {thisDetail.score?<div>
                                 <img src={score} alt='score'/>
                                 General score: {thisDetail.score}%
-                            </div>
-                            <div>
+                            </div>:null}
+
+                            {thisDetail.healthScore?<div>
                                 <img src={hScore} alt='hScore'/>
                                 Health score: {thisDetail.healthScore}%
-                            </div>
-                            <div>
+                            </div>:null}
+
+                            {thisDetail.time?<div>
                             <img src={timer} alt='timer'/>
                                 <span>Ready in <span style={{fontWeight:'bold'}}>{thisDetail.time}</span> minutes</span>
-                            </div>
+                            </div>:null}
+                            
+                            
+                            
                         </Scores>
                     </div>
                     
                 </DetailText>
 
-                
-
                 <DetailWays>
                     <Resume id='resume'>
-                        {/* {isNaN(id)?thisDetail.resume:null} */}
                     </Resume>
                     <HR/>
                     <Steps>
@@ -229,7 +232,7 @@ const Poster = styled.div`
 
 const DetailText = styled.div`
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     width: 100%;
     height: 35vh;
     min-height: 250px;
