@@ -2,26 +2,29 @@ import React, {useEffect} from 'react'
 import { useSelector, useDispatch} from 'react-redux'
 import Recipe from './Recipe'
 import styled from 'styled-components'
-import { previousPage, nextPage, currentPage } from '../Actions'
+import { previousPage, nextPage, currentPage, filter } from '../Actions'
 
 export default function RecipesHolder(){
 
     const dispatch=useDispatch()
 
     let found=useSelector(state=>state.foundRecipes)
+    let filtered=useSelector(state=>state.filteredRecipes)
+    let filteredDiets=useSelector(state=>state.filteredDiets)
     let recipes=useSelector(state=>state.currentPage)
 
     useEffect(()=>{
-        if(!found.message) dispatch(currentPage())
-    },[found, dispatch])
+        if(!found.message){ 
+            dispatch(filter('sortName', 'Ascending'))
+            dispatch(currentPage())
+        }
+    },[dispatch, filtered, filteredDiets])
 
     if(recipes){
         return(
             <Holder>
                 {found.message?
-                <NoRec>
-                    No recipes found
-                </NoRec>
+                <NoRec>No recipes found</NoRec>
                 :
                 <>
                 <Recipes>
@@ -40,7 +43,8 @@ export default function RecipesHolder(){
                     <button type='button' id='b' onClick={()=>{
                         dispatch(nextPage())
                     }}>{'>'}</button>
-                </Paginator></>}
+                </Paginator>
+                </>}
                 
             </Holder>
         )

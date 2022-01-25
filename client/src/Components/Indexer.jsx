@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'
-import { getDietTypes, filter } from "../Actions"
+import { getDietTypes, filter, currentPage } from "../Actions"
 import styled from "styled-components";
 
 export default function Search(){
@@ -11,16 +11,14 @@ export default function Search(){
         var select = document.getElementById(tag);
         var value = select.options[select.selectedIndex].value;
         console.log(value)
-        dispatch(filter(tag, value))
+        dispatch(filter(tag, value.toString()))
+        dispatch(currentPage())
     }
 
     useEffect(()=>{
         dispatch(getDietTypes())
+        dispatch(currentPage())
     },[dispatch])
-
-    useEffect(()=>{
-        
-    })
 
     const diets = useSelector(state=>state.dietTypes)
 
@@ -30,7 +28,7 @@ export default function Search(){
         <Sorters>
             <div>
                 <label>Sort by name</label>
-                <select id='sortName' onChange={()=>handleSort('sortName')}>
+                <select id='sortName' onClick={()=>handleSort('sortName')}>
                     <option value="Ascending">Ascending</option>
                     <option value="Descending">Descending</option>
                 </select>
@@ -39,7 +37,7 @@ export default function Search(){
             <div>
                 <label>Sort by diet</label>
                 <select id='sortDiet' onChange={()=>handleSort('sortDiet')}>
-                    <option value='none'>None</option>
+                    <option value='none'>Any</option>
                     {diets?.map(diet=>
                         <option value={diet} key={diet}>{diet}</option>
                     )}

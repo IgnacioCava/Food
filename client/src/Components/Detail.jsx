@@ -54,7 +54,7 @@ export default function Detail(){
 
                 <DetailText>
                     <Poster>
-                        <img src={tuna} alt='food'/>
+                        <img src={thisDetail.image} alt='food'/>
                     </Poster>
                     
 

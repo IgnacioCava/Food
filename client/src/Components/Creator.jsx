@@ -18,6 +18,11 @@ export default function Creator(){
     dietTypes: [],
     dishTypes: [],
     steps: [],
+    image:''
+    })
+
+    useEffect(()=>{
+        console.log(recData)
     })
 
     const [errors, setErrors] = useState('')
@@ -34,23 +39,21 @@ export default function Creator(){
             }
             return
         }
-            document.getElementById(type).style.transition='.2s'
-            document.getElementById(type).style.backgroundColor='red'
-            document.getElementById('error').style.width='300px'
-            document.getElementById('error').style.borderLeft='10px solid red'
-            
-                setTimeout(()=>{
-                    document.getElementById(type).style.transition='1s'
-                    document.getElementById(type).style.backgroundColor='white'
-                },500)
-                setTimeout(()=>{
-                    if(document.getElementById('error')){
-                        document.getElementById('error').style.border='0px solid red'
-                        document.getElementById('error').style.width='0px'
-                    }
-                },2000)
-            
-            
+        document.getElementById(type).style.transition='.2s'
+        document.getElementById(type).style.backgroundColor='red'
+        document.getElementById('error').style.width='300px'
+        document.getElementById('error').style.borderLeft='10px solid red'
+        
+        setTimeout(()=>{
+            document.getElementById(type).style.transition='1s'
+            document.getElementById(type).style.backgroundColor='white'
+        },500)
+        setTimeout(()=>{
+            if(document.getElementById('error')){
+                document.getElementById('error').style.border='0px solid red'
+                document.getElementById('error').style.width='0px'
+            }
+        },2000)
     }
 
     function validate(input, target){
@@ -145,7 +148,7 @@ export default function Creator(){
             <GoBack><Link to='/home'>Home</Link></GoBack>
             <Error id='error'>{errors}</Error>
             <Holder>
-                <form onkeydown="return event.key != 'Enter';" onKeyPress={event=>{
+                <form /*onkeydown="return event.key != 'Enter';"*/ onKeyPress={event=>{
                     event.key === 'Enter' && event.preventDefault();
                 }} onSubmit={(event)=>{
                     event.preventDefault()
@@ -279,6 +282,29 @@ export default function Creator(){
                         </InputHolder> 
                     </Misc>
 
+                    <UploadFile>
+                        <label htmlFor='file' id='uploadLabel'>Upload a photo of your recipe</label>
+                        <input style={{}} type='file' name='file' onChange={(event)=>{
+                            console.log(event.target.files[0])
+                            var fileReader = new FileReader();
+                            fileReader.onload = function(fileLoadedEvent){
+                                
+                                fileReader.onloadend = ()=>{
+                                let img = document.getElementById('upload')
+                                img.src=fileReader.result
+                                document.getElementById('uploadLabel').innerText='Click to change the image'
+                                }
+
+                                setRecData({
+                                    ...recData,
+                                    image:fileLoadedEvent.target.result
+                                })
+                            }
+                            fileReader.readAsDataURL(event.target.files[0])
+                        }}/>
+                        <img id='upload' src='' alt='' style={{width:'250px'}}/>
+                    </UploadFile>
+
                     <AreaHolder onKeyPress={event=>{
                         if(event.key === 'Enter'){
                             
@@ -319,6 +345,29 @@ export default function Creator(){
     )
     
 }
+
+const UploadFile = styled.div`
+display: flex;
+border:1px solid grey;
+position: relative;
+width: fit-content;
+flex-direction: column;
+align-items: center;
+padding:5px;
+margin: auto;
+margin-top:15px;
+display: flex;
+background-color: white;
+input{
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+label{
+    width:100%;
+}
+`
 
 const GoBack = styled.div`
 position: absolute;

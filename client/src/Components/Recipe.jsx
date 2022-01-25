@@ -35,10 +35,8 @@ export default function Recipe({id}){
                 </Score>
                 {thisRecipe.time?
                 <Time>
-                    <div>
-                        <img src={timer} alt='Ready in:'/>
-                        {thisRecipe.time} min
-                    </div>
+                    <img src={timer} alt='Ready in:'/>
+                    {thisRecipe.time} min
                 </Time>:null }
                 
                 <DietTypes>{thisRecipe.dietTypes.map(e=><Diet key={a++}>{e}</Diet>)}</DietTypes>

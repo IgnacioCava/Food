@@ -14,9 +14,7 @@ import hmenu from 'C:/Users/User/Desktop/Henry/PI-Food-main/client/src/Component
 function App() {
   return (
     <div className="App">
-      {/* <h1>Henry Food</h1> */}
-      
-      
+
       <Routes>
         <Route 
           path='/'

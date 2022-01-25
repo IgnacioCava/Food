@@ -66,11 +66,14 @@ export function createRecipe(recipe) {
                 healthScore:Number(recipe.healthScore), 
                 time:Number(recipe.time), 
                 dishTypes:recipe.dishTypes, 
-                steps:recipe.steps
+                steps:recipe.steps,
+                image:recipe.image
             })
         })
     }
 }
+
+let page=0;
 
 export function filter(sort, by) {
     if(sort==='sortName') return {
@@ -78,18 +81,24 @@ export function filter(sort, by) {
         payload: by
     }
 
-    if(sort==='sortDiet') return {
-        type: FILTER_BY_DIET_TYPE,
-        payload: by
-    }
-
     if(sort==='sortScore') return {
         type: FILTER_BY_SCORE,
         payload: by
     }
+
+    if(sort==='sortDiet'&&by!=='None') return {
+        type: FILTER_BY_DIET_TYPE,
+        payload: by
+    }
+
+    else return {
+        type: CURRENT_PAGE,
+        payload: page
+    }
+    
 }
 
-let page=0;
+
 
 export function currentPage(){
     return{
