@@ -8,43 +8,42 @@ export default function RecipesHolder(){
 
     const dispatch=useDispatch()
 
-    let found=useSelector(state=>state.foundRecipes)
-    let filtered=useSelector(state=>state.filteredRecipes)
+    let foundrecipes=useSelector(state=>state.foundRecipes)
+    let filteredRecipes=useSelector(state=>state.filteredRecipes)
     let filteredDiets=useSelector(state=>state.filteredDiets)
     let recipes=useSelector(state=>state.currentPage)
 
     useEffect(()=>{
-        if(!found.message){ 
-            dispatch(filter('sortName', 'Ascending'))
+        if(!foundrecipes.message){ 
+            //dispatch(filter('sortName', 'Ascending'))
             dispatch(currentPage())
         }
-    },[dispatch, filtered, filteredDiets])
+    },[dispatch, filteredRecipes, filteredDiets, foundrecipes.message])
 
     if(recipes){
         return(
             <Holder>
-                {found.message?
-                <NoRec>No recipes found</NoRec>
-                :
-                <>
-                <Recipes>
-                    {recipes.map(recipe=>
-                        <Recipe
-                            key={recipe.id}
-                            id={recipe.id}
-                        />
-                    )
-                    }
-                </Recipes>
-                <Paginator>
-                    <button type='button' id='a' onClick={()=>{
-                        dispatch(previousPage())
-                    }}>{'<'}</button>
-                    <button type='button' id='b' onClick={()=>{
-                        dispatch(nextPage())
-                    }}>{'>'}</button>
-                </Paginator>
-                </>}
+                {foundrecipes.message
+                    ?<NoRec>No recipes found</NoRec>
+                    :<>
+                        <Recipes>
+                            {recipes.map(recipe=>
+                                <Recipe
+                                    key={recipe.id}
+                                    id={recipe.id}
+                                />
+                            )}
+                        </Recipes>
+                        <Paginator>
+                            <button type='button' id='a' onClick={()=>{
+                                dispatch(previousPage())
+                            }}>{'<'}</button>
+                            <button type='button' id='b' onClick={()=>{
+                                if(filteredDiets==='Unused') dispatch(nextPage(filteredRecipes.length/9))
+                                else dispatch(nextPage(filteredDiets.length/9))
+                            }}>{'>'}</button>
+                        </Paginator>
+                    </>}
                 
             </Holder>
         )

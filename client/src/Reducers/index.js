@@ -6,7 +6,7 @@ const initialState = {
     currentRecipeDetail: [],
     dietTypes:[],
     filteredRecipes:[],
-    filteredDiets:[],
+    filteredDiets:'Unused',
     currentPage:[]
 
 }
@@ -32,33 +32,67 @@ export default function reducer(state=initialState, action){
             }
             else return {...state, filteredDiets: state.filteredRecipes.filter(recipe=>recipe.dietTypes.includes(action.payload.toLowerCase()))}
             
-        case FILTER_BY_ALPHA:
+            case FILTER_BY_ALPHA:
             if(state.foundRecipes.message) return {...state}
-            if(action.payload==='Ascending') return {...state, filteredRecipes: state.foundRecipes.sort((a, b) => {
-                a.name.localeCompare(b.name)
-                if(a.name.toLowerCase()<b.name.toLowerCase()) return -1
-                if(a.name.toLowerCase()>b.name.toLowerCase()) return 1
-                return 0
-            })}
-            else return {...state, filteredRecipes: state.foundRecipes.sort((a, b) => {
-                a.name.localeCompare(b.name)
-                if(a.name.toLowerCase()<b.name.toLowerCase()) return 1
-                if(a.name.toLowerCase()>b.name.toLowerCase()) return -1
-                return 0
-            })}
+            if(action.payload==='Ascending'){
+                if(Array.isArray(state.filteredDiets)){
+                    return {...state, filteredDiets: state.filteredDiets.sort((a, b) => {
+                        if(a.name.toLowerCase()<b.name.toLowerCase()) return -1
+                        if(a.name.toLowerCase()>b.name.toLowerCase()) return 1
+                        return 0
+                    })}
+                } else {
+                    return {...state, filteredRecipes: state.foundRecipes.sort((a, b) => {
+                        if(a.name.toLowerCase()<b.name.toLowerCase()) return -1
+                        if(a.name.toLowerCase()>b.name.toLowerCase()) return 1
+                        return 0
+                    })}
+                }
+            } else{
+                if(Array.isArray(state.filteredDiets)){
+                    return {...state, filteredDiets: state.filteredDiets.sort((a, b) => {
+                        if(a.name.toLowerCase()<b.name.toLowerCase()) return 1
+                        if(a.name.toLowerCase()>b.name.toLowerCase()) return -1
+                        return 0
+                    })}
+                } else {
+                    return {...state, filteredRecipes: state.foundRecipes.sort((a, b) => {
+                        if(a.name.toLowerCase()<b.name.toLowerCase()) return 1
+                        if(a.name.toLowerCase()>b.name.toLowerCase()) return -1
+                        return 0
+                    })}
+                }
+            }
         
         case FILTER_BY_SCORE:
-            if(action.payload==='Ascending') 
-            return {...state, filteredRecipes: state.foundRecipes.sort((a, b) => {
-                if(a.score<b.score) return 1
-                if(a.score>b.score) return -1
-                return 0
-            })}
-            else return {...state, filteredRecipes: state.foundRecipes.sort((a, b) => {
-                if(a.score<b.score) return -1
-                if(a.score>b.score) return 1
-                return 0
-            })}
+            if(action.payload==='Ascending'){
+                if(Array.isArray(state.filteredDiets)){
+                    return {...state, filteredDiets: state.filteredDiets.sort((a, b) => {
+                        if(a.score<b.score) return 1
+                        if(a.score>b.score) return -1
+                        return 0
+                    })}
+                }
+                else return {...state, filteredRecipes: state.filteredRecipes.sort((a, b) => {
+                    if(a.score<b.score) return 1
+                    if(a.score>b.score) return -1
+                    return 0
+                })}
+            } else {
+                if(Array.isArray(state.filteredDiets)){
+                    return {...state, filteredDiets: state.filteredDiets.sort((a, b) => {
+                        if(a.score<b.score) return -1
+                        if(a.score>b.score) return 1
+                        return 0
+                    })}
+                } else {
+                    return {...state, filteredRecipes: state.filteredRecipes.sort((a, b) => {
+                        if(a.score<b.score) return -1
+                        if(a.score>b.score) return 1
+                        return 0
+                    })}
+                }
+            }      
         
         case NEXT_PAGE:
             console.log(NEXT_PAGE)
@@ -69,6 +103,7 @@ export default function reducer(state=initialState, action){
 
         case CURRENT_PAGE:
             if(state.filteredDiets==='Nothing was found') return {...state, currentPage:[]}
+            if(Array.isArray(state.filteredDiets)) return {...state, currentPage:state.filteredDiets.slice(action.payload*9,action.payload*9+9)}
             if(state.filteredRecipes.length) return {...state, currentPage: state.filteredRecipes.slice(action.payload*9,action.payload*9+9)}
             else return {...state, currentPage: state.foundRecipes.slice(action.payload*9,action.payload*9+9)}
 

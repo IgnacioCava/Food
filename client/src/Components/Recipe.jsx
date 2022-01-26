@@ -1,7 +1,8 @@
 import React from 'react'
-import { useSelector} from 'react-redux'
-import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import styled from 'styled-components'
+
 import score from './score.png'
 import hScore from './healthScore.png'
 import timer from './timer.png'

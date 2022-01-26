@@ -107,16 +107,20 @@ export function currentPage(){
     }
 }
 
-export function nextPage(){
-    //console.log(page)
-    return{
+export function nextPage(renderedRecipes){
+    console.log(page)
+    if(renderedRecipes/(page+1)>1) return {
         type:NEXT_PAGE,
         payload:++page
+    }
+    else return{
+        type:CURRENT_PAGE,
+        payload:page
     }
 }
 
 export function previousPage(){
-    //console.log(page)
+    console.log(page)
     if(page===0){
         return{
             type:CURRENT_PAGE,

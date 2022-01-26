@@ -7,8 +7,6 @@ import score from './score.png'
 import hScore from './healthScore.png'
 import timer from './timer2.png'
 import detailedBG from './detailbackg.jpg'
-import tuna from './tuna.jpg'
-
 
 export default function Detail(){
     
@@ -18,17 +16,13 @@ export default function Detail(){
     if(!isNaN(id)) id=Number(id)
 
     const thisDetail = useSelector(state=>state.currentRecipeDetail.find(r=>r?.id===id))
-    console.log(thisDetail)
-    
     if(!thisDetail) dispatch(detailedSearch(id))
-   
+    console.log(thisDetail)
 
-    let steps=document.getElementsByClassName('step')
-    
     useEffect(()=>{
         let res = document.getElementById('resume')
-        if(res)res.innerHTML=thisDetail.resume
-
+        if(res) res.innerHTML=thisDetail.resume
+        let steps=document.getElementsByClassName('step')
         Array.from(steps).forEach(step=>{
             step.addEventListener('mouseover',()=>{
                 if(step.style.backgroundColor==='green') return

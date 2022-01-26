@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from 'react-redux'
-import { simpleSearch, filter, currentPage, nextPage, previousPage } from "../Actions"
+import { simpleSearch } from "../Actions"
 import styled from 'styled-components'
 
 export default function Search(){
