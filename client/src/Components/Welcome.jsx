@@ -10,10 +10,13 @@ export default function Welcome(){
         <WelcomeWrapper>
             <Arrival id='arrival' onClick={()=>{
                 document.getElementById('arrival').style.opacity='0'
+                document.getElementById('arrival').style.pointerEvents='none'
                 setTimeout(() => {
-                    if(window.matchMedia("(max-width:600px)")) document.getElementById('waitress').style.right='-100px'
-                    else document.getElementById('waitress').style.right='-50px'
-                    document.getElementById('waitress').style.opacity='1'
+                    let waitressMedia = document.getElementById('waitress')
+                    if(window.matchMedia("(max-width:600px)").matches) waitressMedia.style.right='-140px'
+                    else waitressMedia.style.right='50px'
+                    waitressMedia.style.opacity='1'
+                    waitressMedia.style.transition='2s ease-in-out'
                 },1000)
 
                 setTimeout(() => {
@@ -27,15 +30,16 @@ export default function Welcome(){
                 },2500)
                 
                 setTimeout(() => {
-                    document.getElementById('text').style.cssText=`
-                        animation: typewritter 4s steps(110);
-                        width:600px
+                    document.getElementById('tilde').style.cssText=`
+                        animation: typewritter 3s steps(90);
+                        width:100%;
                     `
                     setTimeout(() => {
-                        document.getElementById('tilde').style.opacity='1'
                         document.getElementById('invitation').style.pointerEvents='unset'
-                    }, 4000);
-                },4000)
+                        document.getElementById('go').style.opacity='1'
+                        document.getElementById('go').style.animation='next infinite 3s ease-in-out'
+                    },2000);
+                },3000)
                 
             }}>
                 After a 5 minute drive, you finally arrive at the restaurant.
@@ -43,18 +47,20 @@ export default function Welcome(){
             </Arrival>
             <Waitress id='waitress' src={waitress} alt='waitress'/>
             <Invitation id='invitation' onClick={()=>{
-                document.getElementById('enter').style.cssText=`
-                visibility:visible;
-                opacitiy:0;
-                `
                 document.getElementById('invitation').style.cssText=`
-                            opacity: 0;
-                            visibility: hidden;
-                        `
+                    opacity: 0;
+                    visibility: hidden;
+                    pointer-events:none;
+                `
+                document.getElementById('enter').style.cssText=`
+                    visibility:visible;
+                    opacitiy:0;
+                `
+                document.getElementById('waitress').style.right='-100vmax'
             }}>
                 <Text style={{margin:0}}>Waitress</Text>
                 <hr/>
-                <Text id='text'>Welcome to X Restaurant! Please seat wherever, I'll be with you shortly <span id='tilde'>&#126;</span></Text>
+                <Text id='text'><span id='tilde'>Welcome! Please seat wherever, I'll be with you shortly&#126;</span></Text>
                 <p id='go' style={{position:'absolute', right:'10px', bottom:0}}>➜</p>
             </Invitation>
             <Enter id='enter'><Link to='/home'>Take a seat</Link></Enter>
@@ -76,6 +82,24 @@ const WelcomeWrapper = styled.div`
     *{
         position: fixed;
     }
+    @keyframes next{
+        from{
+            padding-right:20px;
+            border-right:0px solid black;
+        }
+        40%{
+            padding-right:0px;
+            border-right:5px solid black;
+        }
+        60%{
+            padding-right:0px;
+            border-right:5px solid black;
+        }
+        to{
+            padding-right:20px;
+            border-right:0px solid black; 
+        }
+    }
     
 `
 
@@ -86,21 +110,17 @@ const Arrival = styled.div`
     border-radius: 10px;
     border:4px solid #e45d0f;
     transition: .5s;
+    font-size: large;
+    font-weight:bold;
+    max-width:80%;
+    margin-left:20px;
+    margin-right:20px;
     p{
-        transition: .5s;
-        position: unset;
         text-align: end;
-        position: relative;
-        padding-right:20px;
-        border-right:0px solid black;
-    }
-    :hover{
-        p{
-            font-size: large;
+        position: unset;
+        font-size: large;
             font-weight: bolder;
-            padding-right:0px;
-            border-right:5px solid black;
-        }
+        animation: next infinite 3s ease-in-out;
     }
 `
 
@@ -108,19 +128,18 @@ const Waitress = styled.img`
     width:90vh;
     bottom:0;
     right:100vw;
-    opacity: .8;
-    transition: 2.5s ease-in-out;
+    opacity: .85;
 `
 
 const Enter = styled.div`
-    background-color:#333030ce;
+    background-color:#333030f2;
     border-radius: 15px;
     padding: 10px;
     box-sizing: border-box;
     z-index: 2;
     visibility: hidden;
     opacity: 1;
-    transition: 1s;
+    transition: .5s;
     a{
         position: unset;
         color:white;
@@ -144,8 +163,8 @@ const Invitation = styled.div`
     border:0px solid #dd5c98;
     padding: 0px;
     border-radius: 10px;
-    left:15px;
-    right:15px;
+    left:10px;
+    right:10px;
     bottom:10px;
     visibility: hidden;
     transition: 1s ease-in-out;
@@ -153,20 +172,12 @@ const Invitation = styled.div`
     pointer-events: none;
     #go{
         transition: .5s;
+        opacity: 0;
         position: unset;
         text-align: end;
-        position: relative;
+        position: absolute;
         padding-right:20px;
         border-right:0px solid black;
-    }
-    :hover{
-        #go{
-            font-size: large;
-            font-weight: bolder;
-            padding-right:0px;
-            padding-bottom: 10px 0 10px 0;
-            border-right:5px solid black;
-        }
     }
     hr{
         position: unset;
@@ -174,18 +185,23 @@ const Invitation = styled.div`
         border:1px solid black;
     }
     #text{
-        width: 0%;
-        white-space: nowrap;
-        overflow: hidden;
-        *{
-            opacity:0;
-        }
-        
-    }
-    @keyframes typewritter {
+        @keyframes typewritter {
             from {width: 0px}
-            to {width:600px}
+            to {width:100%}
         }
+        #tilde{
+            width: 0%;
+            white-space: nowrap;
+            text-align: left;
+            font-size: 1.5vw;
+            overflow: hidden;
+            margin:0;
+            @media (max-width:1000px){
+                font-size:3.5vw;
+            }
+        }   
+    }
+    
 `
 
 const Text = styled.p`
