@@ -84,12 +84,8 @@ export default function Detail(){
                             <img src={timer} alt='timer'/>
                                 <span>Ready in <span style={{fontWeight:'bold'}}>{thisDetail.time}</span> minutes</span>
                             </div>:null}
-                            
-                            
-                            
                         </Scores>
                     </div>
-                    
                 </DetailText>
 
                 <DetailWays>
@@ -126,7 +122,6 @@ const NoBack = styled.div`
     box-sizing: border-box;
     margin:auto;
     transition: .3s;
-    
     border-radius: 50%;
     a{
         color:#5667ffb5;
@@ -150,16 +145,16 @@ const Back = styled.div`
     white-space: nowrap;
     left:7px;
     transition:.7s;
-a{
-    text-decoration: none;
-    color:white;
-}
-:hover{
-    background-color:#41558b90;
-    width: 50px;
-    padding: 0 7px 0 7px;
-    border-radius: 6px;
-}
+    a{
+        text-decoration: none;
+        color:white;
+    }
+    :hover{
+        background-color:#41558b90;
+        width: 50px;
+        padding: 0 7px 0 7px;
+        border-radius: 6px;
+    }
 `
 
 const ID = styled.span`
@@ -180,20 +175,20 @@ const ID = styled.span`
 const Background = styled.div`
     display: flex;
     justify-content: center;
-::before{
-    content:'';
-    background-image: url(${detailedBG});
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    filter: brightness(50%);
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-} 
+    ::before{
+        content:'';
+        background-image: url(${detailedBG});
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        filter: brightness(50%);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+    } 
 `
 
 const DetailWrapper = styled.div`
@@ -208,9 +203,9 @@ const DetailWrapper = styled.div`
     transition: .3s;
     padding: 10px;
     box-sizing: content-box;
-:hover{
-    background-color: #2f344690;
-}
+    :hover{
+        background-color: #2f344690;
+    }
 `
 
 const Poster = styled.div`
@@ -230,19 +225,18 @@ const DetailText = styled.div`
     width: 100%;
     height: 35vh;
     min-height: 250px;
-@media (max-width:750px){
-    flex-direction: column;
-    position: relative;
-    justify-content: flex-start;
-    align-items:center;
-    height: fit-content;
-    
-    ${Poster}{
-        width: 100%;
-        height: 30vh;
-        min-height: 200px;
+    @media (max-width:750px){
+        flex-direction: column;
+        position: relative;
+        justify-content: flex-start;
+        align-items:center;
+        height: fit-content;
+        ${Poster}{
+            width: 100%;
+            height: 30vh;
+            min-height: 200px;
+        }
     }
-}
 `
 
 const Resume = styled.div`
@@ -291,21 +285,21 @@ const Step = styled.div`
     margin-top:5px;
     margin-bottom:5px;
     transition: .3s;
-:hover{
-    background-color: #3c7c3cd2;
-}
->span{
-    padding-left:4px;
-}
->p{
-    padding-left:10px;
-    margin-top:0;
-}
->hr{
-    width: 95%;
-    border-left:none;
-    border-right:none;
-}
+    :hover{
+        background-color: #3c7c3cd2;
+    }
+    >span{
+        padding-left:4px;
+    }
+    >p{
+        padding-left:10px;
+        margin-top:0;
+    }
+    >hr{
+        width: 95%;
+        border-left:none;
+        border-right:none;
+    }
 `
 
 const DietTypes = styled.div`
@@ -330,38 +324,35 @@ const Scores = styled.div`
     flex-direction:row;
     justify-content: center;
     flex-wrap: wrap;
-
-div{
-    width: fit-content;
-    max-width: 40%;
-    display: flex;
-    background-color: #3232ff;
-    margin:5px;
-    align-items: center;
-    border-radius: 35px;
-    padding-right: 10px;
-    text-align:middle;
-    position:relative;
-    ::before{
-        content: "";
-        position: absolute;
-        width: 100%;
-        height:100%;
-        border-radius: 35px;
-        -webkit-box-shadow: 13px 11px 2px 0px rgb(0 0 0 / 30%), 1px 1px 1px 0.1px rgb(0 0 0 / 10%);
-        -moz-box-shadow: 13px 11px 2px 0px rgb(0 0 0 / 30%), 1px 1px 1px 0.1px rgb(0 0 0 / 10%);
-        box-shadow: 13px 11px 2px 0px rgb(0 0 0 / 30%), 1px 1px 1px 0.1px rgb(0 0 0 / 10%);
-    }
-}
-
-img{
-    margin-right:10px;
-    width: 50px;
-}
-
-@media (max-width:750px) {
     div{
-        max-width: 215px;
+        width: fit-content;
+        max-width: 40%;
+        display: flex;
+        background-color: #3232ff;
+        margin:5px;
+        align-items: center;
+        border-radius: 35px;
+        padding-right: 10px;
+        text-align:middle;
+        position:relative;
+        ::before{
+            content: "";
+            position: absolute;
+            width: 100%;
+            height:100%;
+            border-radius: 35px;
+            -webkit-box-shadow: 13px 11px 2px 0px rgb(0 0 0 / 30%), 1px 1px 1px 0.1px rgb(0 0 0 / 10%);
+            -moz-box-shadow: 13px 11px 2px 0px rgb(0 0 0 / 30%), 1px 1px 1px 0.1px rgb(0 0 0 / 10%);
+            box-shadow: 13px 11px 2px 0px rgb(0 0 0 / 30%), 1px 1px 1px 0.1px rgb(0 0 0 / 10%);
+        }
     }
+    img{
+        margin-right:10px;
+        width: 50px;
+    }
+    @media (max-width:750px) {
+        div{
+            max-width: 215px;
+        }
 }
 `

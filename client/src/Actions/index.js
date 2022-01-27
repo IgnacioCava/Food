@@ -109,7 +109,7 @@ export function currentPage(){
 
 export function nextPage(renderedRecipes){
     console.log(page)
-    if(renderedRecipes/(page+1)>1) return {
+    if((renderedRecipes-1)/page>1) return {
         type:NEXT_PAGE,
         payload:++page
     }

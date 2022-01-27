@@ -8,13 +8,12 @@ const initialState = {
     filteredRecipes:[],
     filteredDiets:'Unused',
     currentPage:[]
-
 }
 
 export default function reducer(state=initialState, action){
     switch (action.type) {
         case SIMPLE_SEARCH:
-            return {...state, foundRecipes: action.payload, filteredRecipes: []}
+            return {...state, foundRecipes: action.payload, filteredRecipes: action.payload, filteredDiets:'Unused',}
 
         case DETAILED_SEARCH:
             return {...state, currentRecipeDetail: state.currentRecipeDetail.concat(action.payload)}

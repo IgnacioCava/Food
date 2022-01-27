@@ -27,6 +27,15 @@ export default function Creator(){
 
     const [errors, setErrors] = useState('')
 
+    function updateScroll(){
+        var element = document.getElementById("formHolder");
+        element.scrollTop = element.scrollHeight;
+    }
+
+    useEffect(()=>{
+        updateScroll()
+    }, [recData.steps])
+
     function animateError(type){
         if(!type){
             document.getElementById('error').style.width='250px'
@@ -147,22 +156,19 @@ export default function Creator(){
             <Backg></Backg>
             <GoBack><Link to='/home'>Home</Link></GoBack>
             <Error id='error'>{errors}</Error>
-            <Holder>
-                <form /*onkeydown="return event.key != 'Enter';"*/ onKeyPress={event=>{
-                    event.key === 'Enter' && event.preventDefault();
-                }} onSubmit={(event)=>{
-                    event.preventDefault()
-                    if(formValidate()) dispatch(createRecipe(recData))
-                }}>
+            <Holder id='formHolder'>
+                <form onKeyPress={event=>{event.key === 'Enter' && event.preventDefault()}}
+                      onSubmit={event=>{event.preventDefault()
+                                        if(formValidate()) dispatch(createRecipe(recData))}}>
                     
                     <InputHolder>
-                    <label>Title</label>
-                    <input type="text" name='name' id='title' value={recData.name} onChange={handleInputChange}/>
+                        <label>Title</label>
+                        <input type="text" name='name' id='title' value={recData.name} onChange={handleInputChange}/>
                     </InputHolder>
                     
                     <AreaHolder>
-                    <label>Resume</label>
-                    <textarea type="text" name='resume' id='resumeText' style={{resize:'none'}} value={recData.resume} onChange={handleInputChange} />
+                        <label>Resume</label>
+                        <textarea type="text" name='resume' id='resumeText' style={{resize:'none'}} value={recData.resume} onChange={handleInputChange} />
                     </AreaHolder>
 
                     <Types>
@@ -186,8 +192,8 @@ export default function Creator(){
                                 }
                             }
                             }}>
+
                             <label>Diet types</label>
-                        
                             <Input id='dietTypes'>
                                 <input type="text" name='dietTypes'/>
                                 <div id='tags'></div>
@@ -213,9 +219,9 @@ export default function Creator(){
                                     event.target.value=''
                                 }
                             }
-                            }}>
+                        }}>
+
                             <label>Dish types</label>
-                        
                             <Input id='dishTypes'>
                                 <input type="text" name='dishTypes'/>
                                 <div id='dishTags'></div>
@@ -225,59 +231,56 @@ export default function Creator(){
 
                     <Misc>
                         <InputHolder>
-                        <label>Score</label>
-                        <input type="number" name='score' value={recData.score} onChange={(event)=>{
-                            if(scoreValidate(event.target.value))
-                            handleInputChange(event)
-                            else{
-                                if(event.target.value<0)
-                                setRecData({
-                                    ...recData,
-                                    score: 0
-                                })
+                            <label>Score</label>
+                            <input type="number" name='score' value={recData.score} onChange={(event)=>{
+                                if(scoreValidate(event.target.value))
+                                handleInputChange(event)
                                 else{
+                                    if(event.target.value<0)
                                     setRecData({
                                         ...recData,
-                                        score: 100
+                                        score: 0
                                     })
+                                    else{
+                                        setRecData({
+                                            ...recData,
+                                            score: 100
+                                        })
+                                    }
                                 }
-                            }
-                            }}/>
-                            
-                        </InputHolder>
-
-                        <InputHolder>
-                        <label>Health score</label>
-                        <input type="number" name='healthScore' value={recData.healthScore} onChange={(event)=>{
-                            if(scoreValidate(event.target.value))
-                            handleInputChange(event)
-                            else{
-                                if(event.target.value<0)
-                                setRecData({
-                                    ...recData,
-                                    healthScore: 0
-                                })
-                                else{
-                                    setRecData({
-                                        ...recData,
-                                        healthScore: 100
-                                    })
-                                }
-                            }
                             }}/>
                         </InputHolder>
 
                         <InputHolder>
-                        <label>Preparation time</label>
-                        <input type="number" name='time' value={recData.time} onChange={(event)=>{
-                            if(timeValidate(event.target.value))
-                            handleInputChange(event)
-                            else{
-                                setRecData({
-                                    ...recData,
-                                    time: 0
-                                })
-                            }
+                            <label>Health score</label>
+                            <input type="number" name='healthScore' value={recData.healthScore} onChange={(event)=>{
+                                if(scoreValidate(event.target.value)) handleInputChange(event)
+                                else{
+                                    if(event.target.value<0)
+                                    setRecData({
+                                        ...recData,
+                                        healthScore: 0
+                                    })
+                                    else{
+                                        setRecData({
+                                            ...recData,
+                                            healthScore: 100
+                                        })
+                                    }
+                                }
+                            }}/>
+                        </InputHolder>
+
+                        <InputHolder>
+                            <label>Preparation time</label>
+                            <input type="number" name='time' value={recData.time} onChange={(event)=>{
+                                if(timeValidate(event.target.value)) handleInputChange(event)
+                                else{
+                                    setRecData({
+                                        ...recData,
+                                        time: 0
+                                    })
+                                }
                             }}/>
                         </InputHolder> 
                     </Misc>
@@ -288,7 +291,6 @@ export default function Creator(){
                             console.log(event.target.files[0])
                             var fileReader = new FileReader();
                             fileReader.onload = function(fileLoadedEvent){
-                                
                                 fileReader.onloadend = ()=>{
                                 let img = document.getElementById('upload')
                                 img.src=fileReader.result
@@ -307,9 +309,7 @@ export default function Creator(){
 
                     <AreaHolder onKeyPress={event=>{
                         if(event.key === 'Enter'){
-                            
                             if(validate(event.target.value, recData.steps)){
-                                
                                 handleInputChange(event)
                                 let span = document.createElement('span')
                                 span.innerText= 'Step '+(recData.steps.length+1)+': '+event.target.value.replaceAll('\n', '')
@@ -342,45 +342,43 @@ export default function Creator(){
                 </form>
             </Holder>
         </CreatorWrapper>
-    )
-    
+    ) 
 }
 
 const UploadFile = styled.div`
-display: flex;
-border:1px solid grey;
-position: relative;
-width: fit-content;
-flex-direction: column;
-align-items: center;
-padding:5px;
-margin: auto;
-margin-top:15px;
-display: flex;
-background-color: white;
-input{
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-}
-label{
-    width:100%;
-}
+    display: flex;
+    border:1px solid grey;
+    position: relative;
+    width: fit-content;
+    flex-direction: column;
+    align-items: center;
+    padding:5px;
+    margin: auto;
+    margin-top:15px;
+    display: flex;
+    background-color: white;
+    input{
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+    }
+    label{
+        width:100%;
+    }
 `
 
 const GoBack = styled.div`
-position: absolute;
-top:0;
-left:0;
-border-radius: 0 0 5px 0;
-background-color: #4949498d;
-
-padding:5px;
-a{
-    text-decoration: none;
-    color:white;
-}
+    position: absolute;
+    top:0;
+    left:0;
+    border-radius: 0 0 5px 0;
+    background-color: #4949498d;
+    padding:5px;
+    a{
+        text-decoration: none;
+        color:white;
+    }
 `
 
 const CreatorWrapper = styled.div`
@@ -402,112 +400,108 @@ const CreatorWrapper = styled.div`
 `
 
 const Error = styled.div`
-position: fixed;
-display: flex;
-justify-content: center;
-align-items: center;
-right:0;
-top:10px;
-width: 0;
-height: 10%;
-background-color:white;
-z-index: 2;
-transition: 1s;
-white-space: nowrap;
-border-radius: 5px 0 0 5px;
-overflow: hidden;
-font-weight: bold;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right:0;
+    top:10px;
+    width: 0;
+    height: 10%;
+    background-color:white;
+    z-index: 2;
+    transition: 1s;
+    white-space: nowrap;
+    border-radius: 5px 0 0 5px;
+    overflow: hidden;
+    font-weight: bold;
 `
 
 const AreaTags = styled.div`
-display: flex;
-flex-direction: column-reverse;
-div#steptags{
     display: flex;
     flex-direction: column-reverse;
-    margin-bottom:40px;
-    background-color: white;
-    span{
-    display: flex;
-    border:1px solid black;
-    background-color:white;
-    padding:3px;
-    margin:5px;
-    border-radius: 5px;
-    transition: .4s;
-    :hover{
-        background-color:red;
+    div#steptags{
+        display: flex;
+        flex-direction: column-reverse;
+        margin-bottom:40px;
+        background-color: white;
+        span{
+        display: flex;
+        border:1px solid black;
+        background-color:white;
+        padding:3px;
+        margin:5px;
+        border-radius: 5px;
+        transition: .4s;
+        :hover{
+            background-color:red;
+        }
     }
-}
 }
 `
 
 const AreaHolder = styled.div`
-display: flex;
-flex-direction: column;
-width:100%;
-height: fit-content;
-label{
-    word-break: keep-all;
-}
-textarea#stepText{
+    display: flex;
+    flex-direction: column;
     width:100%;
-    height: 100px;
-    box-sizing: border-box;
-}
-textarea#resumeText{
-    height: 200px;
-    box-sizing: border-box;
-    
-}
+    height: fit-content;
+    label{
+        word-break: keep-all;
+    }
+    textarea#stepText{
+        width:100%;
+        height: 100px;
+        box-sizing: border-box;
+    }
+    textarea#resumeText{
+        height: 200px;
+        box-sizing: border-box;
+    }
 `
 
 const Misc = styled.div`
 display: flex;
 flex-direction: row;
->div{
-    width:33.33%
-}
-@media (max-width:400px) {
-    flex-direction: column;
-    div{
-        width:100%;
+    >div{
+        width:33.33%
     }
-}
+    @media (max-width:400px) {
+        flex-direction: column;
+        div{
+            width:100%;
+        }
+    }
 `
 
 const Input = styled.div`
-display: flex;
-flex-direction: column;
-padding:5px;
-background-color: white;
-box-sizing: content-box;
-
-input{
+    display: flex;
+    flex-direction: column;
+    padding:5px;
+    background-color: white;
     box-sizing: content-box;
-    padding:3px;
-    border:0px;
-    outline: none;
-    border-radius: 5px;
-    width: 98%;
-}
-
-div{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    
-    span{
-    display: flex;
-    max-height:50px;
-    overflow: auto;
-    border:1px solid black;
-    background-color:white;
-    padding:0 3px 3px 3px;
-    margin-right:5px;
-    margin-top:5px;
-    border-radius: 5px;
-    transition: .4s;
+    input{
+        box-sizing: content-box;
+        padding:3px;
+        border:0px;
+        outline: none;
+        border-radius: 5px;
+        width: 98%;
+    }
+    div{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        span{
+            display: flex;
+            max-height:50px;
+            overflow: auto;
+            border:1px solid black;
+            background-color:white;
+            padding:0 3px 3px 3px;
+            margin-right:5px;
+            margin-top:5px;
+            border-radius: 5px;
+            transition: .4s;
         :hover{
             background-color:red;
         }
@@ -516,14 +510,14 @@ div{
 `
 
 const InputHolder = styled.div`
-display: flex;
-flex-direction: column;
-width:100%;
+    display: flex;
+    flex-direction: column;
+    width:100%;
 `
 
 const Create = styled.button`
     position:fixed;
-    bottom:5%;
+    bottom:4%;
     left:5%;
     width: 90%;
     padding: 10px ;
@@ -534,7 +528,6 @@ const Create = styled.button`
     background-color: lightblue;
     cursor:pointer;
 `
-
 
 const Backg = styled.div`
     position: absolute;
@@ -550,20 +543,18 @@ const Backg = styled.div`
 `
 
 const Types = styled.div`
-width:100%;
-display:flex;
-flex-direction: row;
-${Input}#dishTypes{
-    border:1px solid grey;
-}
-${Input}#dietTypes{
-    border:1px solid grey;
-}
-
-@media (max-width:700px) {
-    flex-direction: column;
-
-}
+    width:100%;
+    display:flex;
+    flex-direction: row;
+    ${Input}#dishTypes{
+        border:1px solid grey;
+    }
+    ${Input}#dietTypes{
+        border:1px solid grey;
+    }
+    @media (max-width:700px) {
+        flex-direction: column;
+    }
 `
 
 const Holder = styled.div`
@@ -582,5 +573,4 @@ const Holder = styled.div`
     *{
         outline: none;
     }
-    
 `

@@ -15,10 +15,14 @@ export default function RecipesHolder(){
 
     useEffect(()=>{
         if(!foundrecipes.message){ 
-            //dispatch(filter('sortName', 'Ascending'))
+            dispatch(filter('sortName', 'Ascending'))
             dispatch(currentPage())
         }
     },[dispatch, filteredRecipes, filteredDiets, foundrecipes.message])
+
+    useEffect(()=>{
+
+    },[recipes])
 
     if(recipes){
         return(
