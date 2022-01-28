@@ -20,9 +20,17 @@ export default function RecipesHolder(){
         }
     },[dispatch, filteredRecipes, filteredDiets, foundrecipes.message])
 
-    useEffect(()=>{
-
-    },[recipes])
+    // useEffect(()=>{
+    //     if(recipes.length===0){
+    //         document.getElementById('b').style.visibility='hidden'
+    //         document.getElementById('a').style.visibility='hidden'
+    //     } else{
+    //         document.getElementById('b').style.visibility='visible'
+    //         document.getElementById('a').style.visibility='visible'
+    //     }
+    //     if(recipes.length<9) return document.getElementById('b').style.visibility='hidden'
+    //     document.getElementById('b').style.visibility='visible'
+    // }, [recipes])
 
     if(recipes){
         return(
@@ -40,11 +48,14 @@ export default function RecipesHolder(){
                         </Recipes>
                         <Paginator>
                             <button type='button' id='a' onClick={()=>{
+                                if(filteredDiets==='Nothing was found') return
                                 dispatch(previousPage())
                             }}>{'<'}</button>
                             <button type='button' id='b' onClick={()=>{
+                                if(filteredDiets==='Nothing was found') return 
                                 if(filteredDiets==='Unused') dispatch(nextPage(filteredRecipes.length/9))
                                 else dispatch(nextPage(filteredDiets.length/9))
+                                
                             }}>{'>'}</button>
                         </Paginator>
                     </>}
@@ -92,11 +103,9 @@ const Recipes = styled.div`
     align-content: flex-start;
     justify-content: flex-start;
     width: 100%;
-    
-    @media (max-width:700px){
-        flex-direction: column;
-        flex-wrap: nowrap;
-    } 
+    @media (max-width:850px){
+        justify-content: center
+    }
 `
 
 const Holder = styled.div`
@@ -105,18 +114,13 @@ const Holder = styled.div`
     flex-wrap: wrap;
     justify-content: flex-start;
     width:100%;
-    height: 100%;
-    overflow: auto;
-    ::-webkit-scrollbar{
-        background-color: transparent;
-        }
-    ::-webkit-scrollbar-thumb{
-        background-color: #241711;
-        border:2px solid #66480d;
-        border-right:0;
-        border-radius: 7px 0 0 7px;
-    }
+    
+    /*  */
     p {
         margin:0;
+    }
+    @media (max-width:850px){
+        margin-bottom: 80px;
+        
     }
 `

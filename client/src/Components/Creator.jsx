@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { createRecipe } from '../Actions'
 import { Link } from 'react-router-dom'
 import CreateRec from './CreateRec.jpg'
+import takeRecipe from './takeRecipe.mp3'
 
 export default function Creator(){
 
@@ -159,7 +160,11 @@ export default function Creator(){
             <Holder id='formHolder'>
                 <form onKeyPress={event=>{event.key === 'Enter' && event.preventDefault()}}
                       onSubmit={event=>{event.preventDefault()
-                                        if(formValidate()) dispatch(createRecipe(recData))}}>
+                                        if(formValidate()) {
+                                            document.getElementById('created').volume=.5
+                                            document.getElementById('created').play()
+                                            dispatch(createRecipe(recData))
+                                            }}}>
                     
                     <InputHolder>
                         <label>Title</label>
@@ -335,7 +340,8 @@ export default function Creator(){
                         </AreaTags>
                     </AreaHolder>
 
-                    <Create type='submit' >
+                    <Create type='submit'>
+                        <audio id='created' src={takeRecipe}></audio>
                         Create
                     </Create>
                     
@@ -552,7 +558,7 @@ const Types = styled.div`
     ${Input}#dietTypes{
         border:1px solid grey;
     }
-    @media (max-width:700px) {
+    @media (max-width:800px) {
         flex-direction: column;
     }
 `

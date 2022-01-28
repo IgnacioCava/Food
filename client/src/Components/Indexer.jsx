@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { getDietTypes, filter, currentPage } from "../Actions"
 import styled from "styled-components";
+import hs from './hs.png'
 
 export default function Search(){
 
@@ -26,8 +27,8 @@ export default function Search(){
             <div>
                 <label>Sort by name</label>
                 <select id='sortName' onClick={()=>handleSort('sortName')}>
-                    <option value="Ascending">Ascending</option>
-                    <option value="Descending">Descending</option>
+                    <option value="Ascending">▲ Ascending</option>
+                    <option value="Descending">▼ Descending</option>
                 </select>
             </div>
             
@@ -44,8 +45,8 @@ export default function Search(){
             <div>
                 <label>Sort by score</label>
                 <select id='sortScore' onClick={()=>handleSort('sortScore')}>
-                    <option value="Ascending">Ascending</option>
-                    <option value="Descending">Descending</option>
+                    <option value="Ascending">▲ Ascending</option>
+                    <option value="Descending">▼ Descending</option>
                 </select>
             </div>
         </Sorters>
@@ -69,6 +70,9 @@ const Sorters = styled.div`
         background-color: #464646;
         color:white;
         padding:10px;
+        border-radius: 10px;
+        outline:none;
+        cursor:pointer;
     }
     @media (max-width:430px){
         option, select{

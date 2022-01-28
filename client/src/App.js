@@ -8,13 +8,12 @@ import styled from 'styled-components'
 import Indexer from './Components/Indexer'
 import Detail from './Components/Detail'
 import Creator from './Components/Creator';
-import menu from 'C:/Users/User/Desktop/Henry/PI-Food-main/client/src/Components/menubackg.jpg'
-import hmenu from 'C:/Users/User/Desktop/Henry/PI-Food-main/client/src/Components/horizontalmenubackg.jpg'
+import sound from 'C:/Users/User/Desktop/Henry/PI-Food-main/client/src/Components/backgroundSound.mp3'
 
 function App() {
   return (
     <div className="App">
-
+    <audio id='audio' src={sound} loop='loop'></audio>
       <Routes>
         <Route 
           path='/'
@@ -24,10 +23,11 @@ function App() {
           path='/home'
           element={
             <AppWrapper>
+              
               <Controls>
                 <Indexer/>
                 <SearchBar/>
-                <Create><Link to='/create'>Create</Link></Create>
+                <Create><Link to='/create'>Create recipe</Link></Create>
               </Controls>
               <RecipesHolder/>
             </AppWrapper>}
@@ -45,7 +45,7 @@ function App() {
             <Controls>
               <Indexer/>
               <SearchBar/>
-              <Create><Link to='/create'>Create</Link></Create>
+              <Create><Link to='/create'>Create recipe</Link></Create>
             </Controls>
             <RecipesHolder/>
           </AppWrapper>
@@ -58,46 +58,37 @@ function App() {
 export default App;
 
 const Create = styled.div`
-background-color:lightgreen;
-padding:20px;
-border-radius:10px;
-z-index: 2;
-@media (max-width:800px){
-  position: fixed;
-  bottom:5px;
-}
-a{
-  text-decoration: none;
-  color: black;
-  font-weight:bold;
-}
+  background-color:lightgreen;
+  padding:20px;
+  border-radius:10px;
+  z-index: 2;
+  cursor:pointer;
+  @media (max-width:850px){
+    position: fixed;
+    bottom:5px;
+  }
+  a{
+    text-decoration: none;
+    color: black;
+    font-weight:bold;
+  }
 `
 
 const AppWrapper = styled.div`
-display: flex;
-flex-direction: column;
-position: absolute;
-height: 100vh;
-width: 100vw;
-min-width: 400px;
-min-height: 100vh;
-/* background-image: url(${hmenu});
-background-size: 100% 100%;
-background-attachment: fixed;
-background-repeat: no-repeat;
-background-color:grey;
-@media (max-width:800px){
-  background-image: url(${menu});
-}  */
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 100vw;
+  min-width: 400px;
 `
 
 const Controls = styled.div`
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: space-evenly;
-background-color:rgba(1,1,1,.5);
-@media (max-width:800px){
-  flex-direction: column;
-}
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color:rgba(1,1,1,.5);
+  @media (max-width:850px){
+    flex-direction: column;
+  }
 `

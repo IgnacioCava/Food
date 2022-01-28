@@ -49,20 +49,23 @@ export default function Recipe({id}){
 
 const Holder = styled.div`
     position: relative;
-    width: 30%;
-    height: 30%;
-    margin-right:1.5%;
-    margin-left: 1.4%;
+    width: 31.25%;
+    box-sizing: border-box;
+    height: 27.5vmin;
+    margin-right:1%;
+    margin-left: 1%;
     margin-top:1.3vh;
     margin-bottom: 1.3vh;
     display: flex;
     flex-direction:column;
-    border: 1px solid black;
+    border: 5px solid #b64e08ae;
+    border-radius: 10px;
+    overflow: hidden;
     justify-content: space-between;
     >*{
         position: absolute;
     }
-    @media (max-width:700px){
+    @media (max-width:800px){
         width: 96.5%;
         height: 300px
     }
@@ -70,17 +73,25 @@ const Holder = styled.div`
 
 const Title = styled.p`
     font-weight: bold;
+    font-size:large;
     z-index: 1;
     top:3px;
     padding:2px;
     background-color: #ffffffb0;
     border-radius: 0 5px 5px 0;
     max-width: 90%;
-    overflow: hidden;
-    `
-    const Score = styled.div`
-    right:0;
-    top:30%;
+    overflow: hidden; 
+`
+
+const Score = styled.div`
+    right:0%;
+    top:35px;
+    display: flex;
+    flex-direction: column;
+    @media (max-width:800px) {
+        transform: scale(120%);
+        top:45px;
+    }
     div{
         display: flex;
         flex-direction: column;
@@ -103,7 +114,7 @@ const Time = styled.div`
     padding:2px;
     padding-right:4px;
     border-radius: 0 0 7px 7px;
-    background-color: #ffc400;
+    background-color: #ffc400cc;
     font-weight: bold;
     img{
         width: 30px;
@@ -111,9 +122,10 @@ const Time = styled.div`
 `
 
 const Diet = styled.span`
-    background-color: #e4e4e4be;
+    background-color: #222222da;
+    color:white;
     border-radius: 5px;
-    padding: 3px;
+    padding: 4px;
     margin:3px;
     line-height: 14px;
 `

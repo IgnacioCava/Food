@@ -23,10 +23,7 @@ export default function reducer(state=initialState, action){
 
         case FILTER_BY_DIET_TYPE:
             if(state.filteredRecipes.filter(recipe=>recipe.dietTypes.includes(action.payload.toLowerCase())).length===0){
-                if(action.payload==='none') {
-                    
-                    return {...state, filteredDiets:state.filteredRecipes}
-                }
+                if(action.payload==='none') return {...state, filteredDiets:'Unused'}
                 else return {...state, filteredDiets: 'Nothing was found'}
             }
             else return {...state, filteredDiets: state.filteredRecipes.filter(recipe=>recipe.dietTypes.includes(action.payload.toLowerCase()))}

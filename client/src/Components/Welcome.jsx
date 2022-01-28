@@ -4,11 +4,14 @@ import styled from 'styled-components'
 import background from './restaurant.jpg'
 import waitress from './waitress.png'
 
+
 export default function Welcome(){
 
     return(
         <WelcomeWrapper>
             <Arrival id='arrival' onClick={()=>{
+                document.getElementById("audio").play();
+                document.getElementById("audio").volume=.3;
                 document.getElementById('arrival').style.opacity='0'
                 document.getElementById('arrival').style.pointerEvents='none'
                 setTimeout(() => {
@@ -31,17 +34,20 @@ export default function Welcome(){
                 
                 setTimeout(() => {
                     document.getElementById('tilde').style.cssText=`
-                        animation: typewritter 3s steps(90);
+                        animation: typewritter 5s steps(100);
                         width:100%;
                     `
                     setTimeout(() => {
                         document.getElementById('invitation').style.pointerEvents='unset'
+                        document.getElementById('invitation').style.cursor='pointer'
                         document.getElementById('go').style.opacity='1'
                         document.getElementById('go').style.animation='next infinite 3s ease-in-out'
-                    },2000);
-                },3000)
+                        document.getElementById('go').style.cursor='pointer'
+                    },3000);
+                },4000)
                 
             }}>
+                
                 After a 5 minute drive, you finally arrive at the restaurant.
                 <p>➜</p>
             </Arrival>
@@ -115,11 +121,12 @@ const Arrival = styled.div`
     max-width:80%;
     margin-left:20px;
     margin-right:20px;
+    cursor: pointer;
     p{
         text-align: end;
         position: unset;
         font-size: large;
-            font-weight: bolder;
+        font-weight: bolder;
         animation: next infinite 3s ease-in-out;
     }
 `
@@ -193,11 +200,14 @@ const Invitation = styled.div`
             width: 0%;
             white-space: nowrap;
             text-align: left;
-            font-size: 1.5vw;
+            //font-size: 2vw;
             overflow: hidden;
             margin:0;
-            @media (max-width:1000px){
-                font-size:3.5vw;
+            @media (max-width:520px){
+                font-size:3.7vw;
+            }
+            @media (max-width:420px){
+                font-size:3vw;
             }
         }   
     }

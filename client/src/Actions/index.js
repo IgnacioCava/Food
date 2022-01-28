@@ -10,7 +10,11 @@ export const CURRENT_PAGE='CURRENT_PAGE'
 export const FILTER='FILTER'
 export const LOCALHOST = 'http://localhost:3001'
 
+
+let page=0;
+
 export function simpleSearch(query){
+    page=0;
     return function(dispatch){
         return fetch(`${LOCALHOST}/recipes?name=${query}`)
         .then(response => response.json())
@@ -73,9 +77,9 @@ export function createRecipe(recipe) {
     }
 }
 
-let page=0;
 
 export function filter(sort, by) {
+    
     if(sort==='sortName') return {
         type: FILTER_BY_ALPHA,
         payload: by
@@ -86,9 +90,12 @@ export function filter(sort, by) {
         payload: by
     }
 
-    if(sort==='sortDiet'&&by!=='None') return {
-        type: FILTER_BY_DIET_TYPE,
-        payload: by
+    if(sort==='sortDiet'&&by!=='None') {
+        page=0;
+        return {
+            type: FILTER_BY_DIET_TYPE,
+            payload: by
+        }
     }
 
     else return {
@@ -97,8 +104,6 @@ export function filter(sort, by) {
     }
     
 }
-
-
 
 export function currentPage(){
     return{
