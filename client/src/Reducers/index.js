@@ -91,7 +91,6 @@ export default function reducer(state=initialState, action){
             }      
         
         case NEXT_PAGE:
-            console.log(NEXT_PAGE)
             return {...state, currentPage: state.filteredRecipes.slice(action.payload*9,action.payload*9+9)}
 
         case PREVIOUS_PAGE:

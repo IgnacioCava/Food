@@ -20,23 +20,28 @@ export default function RecipesHolder(){
         }
     },[dispatch, filteredRecipes, filteredDiets, foundrecipes.message])
 
-    // useEffect(()=>{
-    //     if(recipes.length===0){
-    //         document.getElementById('b').style.visibility='hidden'
-    //         document.getElementById('a').style.visibility='hidden'
-    //     } else{
-    //         document.getElementById('b').style.visibility='visible'
-    //         document.getElementById('a').style.visibility='visible'
-    //     }
-    //     if(recipes.length<9) return document.getElementById('b').style.visibility='hidden'
-    //     document.getElementById('b').style.visibility='visible'
-    // }, [recipes])
+    useEffect(()=>{  
+        if(recipes.length){
+            document.getElementById('b').style.visibility='visible'
+            document.getElementById('a').style.visibility='visible'
+        } else{
+            document.getElementById('b').style.visibility='hidden'
+            document.getElementById('a').style.visibility='hidden'
+        }
+    }, [recipes])
+
+    useEffect(()=>{
+        if(document.getElementById('norec')) {
+            document.getElementById('norec').style.transition='0.3s';
+            document.getElementById('norec').style.opacity=1;
+        }
+    },[foundrecipes.message])
 
     if(recipes){
         return(
             <Holder>
                 {foundrecipes.message
-                    ?<NoRec>No recipes found</NoRec>
+                    ?<NoRec id='norec'>{foundrecipes.message}</NoRec>
                     :<>
                         <Recipes>
                             {recipes.map(recipe=>
@@ -55,7 +60,6 @@ export default function RecipesHolder(){
                                 if(filteredDiets==='Nothing was found') return 
                                 if(filteredDiets==='Unused') dispatch(nextPage(filteredRecipes.length/9))
                                 else dispatch(nextPage(filteredDiets.length/9))
-                                
                             }}>{'>'}</button>
                         </Paginator>
                     </>}
@@ -67,15 +71,34 @@ export default function RecipesHolder(){
 }
 
 const NoRec = styled.div`
-position: absolute;
-left:50%;
-transform:translate(-50%);
-top:20%;
-font-weight: bold;
-font-size: 30px;
+    position: fixed;
+    left:50%;
+    transform:translate(-50%);
+    top:25%;
+    font-weight: bold;
+    font-size: 35px;
+    padding: 20px;
+    background-color: #1a1a1aa4;
+    color:white;
+    border-radius: 15px;
+    border:3px solid #c76b0257;
+    backdrop-filter: blur(4px);
+    opacity:0;
 `
 
 const Paginator = styled.div`
+    @keyframes paged {
+        from{
+            background-color:#2a2a2af0;
+        }
+        50%{
+            background-color:lightblue;
+            color:black;
+        }
+        to{
+            background-color:#2a2a2af0;
+        }
+    }
     *{
         position: fixed;
         bottom:0;
@@ -90,10 +113,16 @@ const Paginator = styled.div`
     #a{
         left:0;
         border-radius:0 10px 0 0;
+        :active{
+            animation: paged .2s linear;
+        }
     }
     #b{
         right:0;
         border-radius:10px 0 0 0;
+        :active{
+            animation: paged .2s linear;
+        }
     }
 `
 

@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { detailedSearch } from '../Actions'
 import { Link, useParams } from 'react-router-dom'
-import score from './score.png'
-import hScore from './healthScore.png'
-import timer from './timer2.png'
-import detailedBG from './detailbackg.jpg'
+import score from './Props/score.png'
+import hScore from './Props/healthScore.png'
+import timer from './Props/timer2.png'
+import detailedBG from './Props/detailbackg.jpg'
 
 export default function Detail(){
     
@@ -15,9 +15,9 @@ export default function Detail(){
     let {id} = useParams()
     if(!isNaN(id)) id=Number(id)
 
-    const thisDetail = useSelector(state=>state.currentRecipeDetail.find(r=>r?.id===id))
-    if(!thisDetail) dispatch(detailedSearch(id))
-    console.log(thisDetail)
+    const thisDetail = useSelector(state=>state.currentRecipeDetail[0]?.rec)
+    const message = useSelector(state=>state.currentRecipeDetail[0]?.message)
+    if(!thisDetail&&!message) dispatch(detailedSearch(id))
 
     useEffect(()=>{
         let res = document.getElementById('resume')
@@ -39,7 +39,6 @@ export default function Detail(){
         })
     })
 
-    
     if(thisDetail){
         return(
             <Background>
@@ -52,7 +51,8 @@ export default function Detail(){
                     </Poster>
                     
 
-                    <div style={{display:'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                    <div style={{display:'flex', flexDirection: 'column', justifyContent: 'center'}}> 
+                        {thisDetail.dietTypes.length?<>
                         <p style={{textAlign:'left', margin:0}}>Diets: </p>
                         <DietTypes>
                             {thisDetail.dietTypes.map(e=>
@@ -60,6 +60,9 @@ export default function Detail(){
                                 {e}
                             </Diet>)}
                         </DietTypes>
+                        </>:null
+                        }
+                        
                         {thisDetail.dishTypes.length?<>
                         <p style={{textAlign:'left', margin:0}}> Best served as: </p>
                         <DietTypes>
@@ -106,7 +109,7 @@ export default function Detail(){
             </DetailWrapper>
             </Background>
         )
-    } else return (
+    }else if(message||thisDetail===false) return (
         <Background>
             <DetailWrapper>
                 <NoBack>
@@ -115,7 +118,20 @@ export default function Detail(){
                 </NoBack>
             </DetailWrapper>
         </Background>
-    )
+    ) 
+    
+    else{
+        return (
+            <Background>
+                <DetailWrapper>
+                    <NoBack>
+                        <h1>Loading</h1>
+                    </NoBack>
+                </DetailWrapper>
+            </Background>
+        )
+    }
+    
 }
 
 const NoBack = styled.div`
@@ -128,12 +144,24 @@ const NoBack = styled.div`
         transition: .3s;
         border-radius: 50%;
         text-decoration: none;
+        :hover{
+            padding:5px;
+            border-radius: 10px;
+            background-color: #2b369bb1;
+            color:white;
+        }
     }
-    a:hover{
-        padding:5px;
-        border-radius: 10px;
-        background-color: #2b369bb1;
-        color:white;
+    @media (pointer:coarse){//can be used to detect touchscreens. boolean |'ontouchstart' in window| also works, for pure js apps
+        a{
+            padding:5px;
+            border-radius: 10px;
+            background-color: #2b369bb1;
+            color:white;
+            :focus{
+                color:blue;
+                background-color: white;
+            }
+        }
     }
 `
 
@@ -210,7 +238,7 @@ const DetailWrapper = styled.div`
 
 const Poster = styled.div`
     width:50%;
-    img{
+    img, video{
         border-radius: 10px;
         width: 100%;
         height:100%;

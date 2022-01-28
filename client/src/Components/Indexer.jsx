@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { getDietTypes, filter, currentPage } from "../Actions"
 import styled from "styled-components";
-import hs from './hs.png'
 
 export default function Search(){
 

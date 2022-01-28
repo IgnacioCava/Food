@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import Indexer from './Components/Indexer'
 import Detail from './Components/Detail'
 import Creator from './Components/Creator';
-import sound from 'C:/Users/User/Desktop/Henry/PI-Food-main/client/src/Components/backgroundSound.mp3'
+import sound from 'C:/Users/User/Desktop/Henry/PI-Food-main/client/src/Components/Props/backgroundSound.mp3'
 
 function App() {
   return (
@@ -16,14 +16,13 @@ function App() {
     <audio id='audio' src={sound} loop='loop'></audio>
       <Routes>
         <Route 
-          path='/'
+          path='/*'
           element={<Welcome/>}
         />
         <Route
           path='/home'
           element={
             <AppWrapper>
-              
               <Controls>
                 <Indexer/>
                 <SearchBar/>
@@ -33,11 +32,11 @@ function App() {
             </AppWrapper>}
         />
         <Route 
-          path='/recipe/:id'
+          path='/recipe/:id/*'
           element={<Detail/>}
         />
         <Route 
-          path='/create'
+          path='/create/*'
           element={<Creator/>}
         />
         <Route path='*' element={

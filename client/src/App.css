@@ -2,7 +2,7 @@
 height: 100vh;
 width: 100vw;
 background-color:rgb(27, 27, 27);
-background-image: url(C:/Users/User/Desktop/Henry/PI-Food-main/client/src/Components/horizontalmenubackg.jpg);
+background-image: url(C:\Users\User\Desktop\Henry\PI-Food-main\client\src\Components\Props\horizontalmenubackg.jpg);
 background-size: 100% 100%;
 background-attachment: fixed;
 background-repeat: no-repeat; 
@@ -10,7 +10,7 @@ background-repeat: no-repeat;
 
 @media (max-width:800px){
   :root{
-    background-image: url(C:/Users/User/Desktop/Henry/PI-Food-main/client/src/Components/menubackg.jpg);
+    background-image: url(C:/Users/User/Desktop/Henry/PI-Food-main/client/src/Components/Props/menubackg.jpg);
   }
 }
 

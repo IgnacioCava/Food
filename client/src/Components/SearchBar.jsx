@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from 'react-redux'
-import { previousPage, simpleSearch } from "../Actions"
+import { simpleSearch } from "../Actions"
 import styled from 'styled-components'
-import mag from './mag.png'
+import mag from './Props/mag.png'
 
 export default function Search(){
 
@@ -14,6 +14,8 @@ export default function Search(){
             <form onSubmit={(event)=>{
                 event.preventDefault()
                 dispatch(simpleSearch(searchedRecipe))
+                if(document.getElementById('norec')) document.getElementById('norec').style.opacity='0'
+                
                 setSearched('')
             }}>
                 <SearchInput>

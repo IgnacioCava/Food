@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { createRecipe } from '../Actions'
 import { Link } from 'react-router-dom'
-import CreateRec from './CreateRec.jpg'
-import takeRecipe from './takeRecipe.mp3'
+import CreateRec from './Props/CreateRec.jpg'
+import takeRecipe from './Props/takeRecipe.mp3'
 
 export default function Creator(){
 
@@ -13,9 +13,9 @@ export default function Creator(){
     const [recData, setRecData] = useState({
     name: '',
     resume: '',
-    score: undefined,
-    healthScore: undefined,
-    time: undefined,
+    score: '',
+    healthScore: '',
+    time: '',
     dietTypes: [],
     dishTypes: [],
     steps: [],
@@ -38,32 +38,33 @@ export default function Creator(){
     }, [recData.steps])
 
     function animateError(type){
+        let errortag=document.getElementById('error')
         if(!type){
-            document.getElementById('error').style.width='250px'
-            document.getElementById('error').style.borderLeft='10px solid red'
-            if(document.getElementById('error')){
+            errortag.style.width='250px'
+            errortag.style.borderLeft='10px solid red'
+            if(errortag){
                 setTimeout(()=>{
-                    document.getElementById('error').style.border='0px solid red'
-                    document.getElementById('error').style.width='0px'
-                },2000)
+                    errortag.style.border='0px solid red'
+                    errortag.style.width='0px'
+                },3000)
             }
             return
         }
         document.getElementById(type).style.transition='.2s'
         document.getElementById(type).style.backgroundColor='red'
-        document.getElementById('error').style.width='300px'
-        document.getElementById('error').style.borderLeft='10px solid red'
+        errortag.style.width='300px'
+        errortag.style.borderLeft='10px solid red'
         
         setTimeout(()=>{
             document.getElementById(type).style.transition='1s'
             document.getElementById(type).style.backgroundColor='white'
         },500)
         setTimeout(()=>{
-            if(document.getElementById('error')){
-                document.getElementById('error').style.border='0px solid red'
-                document.getElementById('error').style.width='0px'
+            if(errortag){
+                errortag.style.border='0px solid red'
+                errortag.style.width='0px'
             }
-        },2000)
+        },3000)
     }
 
     function validate(input, target){
@@ -113,7 +114,7 @@ export default function Creator(){
         }
         if(!recData.steps.length){
             setErrors('Please explain how to make your recipe')
-            animateError('steps')
+            animateError('stepText')
             return false
         }
         setErrors('Recipe created')
@@ -161,7 +162,7 @@ export default function Creator(){
                 <form onKeyPress={event=>{event.key === 'Enter' && event.preventDefault()}}
                       onSubmit={event=>{event.preventDefault()
                                         if(formValidate()) {
-                                            document.getElementById('created').volume=.5
+                                            document.getElementById('created').volume=.25
                                             document.getElementById('created').play()
                                             dispatch(createRecipe(recData))
                                             }}}>
@@ -238,8 +239,7 @@ export default function Creator(){
                         <InputHolder>
                             <label>Score</label>
                             <input type="number" name='score' value={recData.score} onChange={(event)=>{
-                                if(scoreValidate(event.target.value))
-                                handleInputChange(event)
+                                if(scoreValidate(event.target.value)) handleInputChange(event)
                                 else{
                                     if(event.target.value<0)
                                     setRecData({
@@ -290,24 +290,68 @@ export default function Creator(){
                         </InputHolder> 
                     </Misc>
 
-                    <UploadFile>
+                    <UploadFile id='uploadfile'>
                         <label htmlFor='file' id='uploadLabel'>Upload a photo of your recipe</label>
-                        <input style={{}} type='file' name='file' onChange={(event)=>{
-                            console.log(event.target.files[0])
-                            var fileReader = new FileReader();
-                            fileReader.onload = function(fileLoadedEvent){
-                                fileReader.onloadend = ()=>{
-                                let img = document.getElementById('upload')
-                                img.src=fileReader.result
-                                document.getElementById('uploadLabel').innerText='Click to change the image'
-                                }
+                        {/* <input type='button' id='erase' value='a'/> */}
+                        <input type='file' name='file' onChange={(event)=>{
+                            let img = document.getElementById('upload')
 
+                            console.log(event.target.files[0])
+                            if(!event.target.files[0]) return
+                            if(event.target.files[0]?.type.includes('image')){//I can imagine this being easily sidestepped, but whatever
+                                if(event.target.files[0]?.size>500000){
+                                    setErrors('The file is too heavy')
+                                    animateError('uploadfile')
+                                    return
+                                }
+                                var fileReader = new FileReader();
+                                fileReader.onload = function(fileLoadedEvent){
+                                    fileReader.onloadend = ()=>{
+                                        img.src=fileReader.result
+                                        document.getElementById('uploadLabel').innerText='Click to change the image'
+                                    }
+                                    setRecData({
+                                        ...recData,
+                                        image:fileLoadedEvent.target.result
+                                    })
+                                    let input = document.createElement('button')
+                                    input.innerText='X'
+                                    input.setAttribute('id','erase')
+                                    input.setAttribute('type','button')
+                                    input.addEventListener('click',()=>{
+                                        setRecData({
+                                            ...recData,
+                                            image:'',
+                                        })
+                                        img.src=''
+                                        document.getElementById('uploadfile').removeChild(input)
+                                        document.getElementById('uploadLabel').innerText='Upload a photo of your recipe'
+                                        event.target.value=''
+                                        return
+                                    })
+                                    if(!recData.image) document.getElementById('uploadfile').append(input)
+                                }
+                                fileReader.readAsDataURL(event.target.files[0])
+                                return 
+                                
+                            }
+                            if(event.target.files[0]?.type.includes('video')){
+                                setErrors('Videos are currently not supported')
+                                animateError('uploadfile')
+                                //if event.target.files[0]?.size< X MB
+                            }
+                            else {
+                                setErrors('Make sure your file is an image')
+                                animateError('uploadfile')
+                                document.getElementById('uploadLabel').innerText='Make sure your file is an image'
                                 setRecData({
                                     ...recData,
-                                    image:fileLoadedEvent.target.result
+                                    image:'',
                                 })
+                                img.src=''
                             }
-                            fileReader.readAsDataURL(event.target.files[0])
+                            
+                            
                         }}/>
                         <img id='upload' src='' alt='' style={{width:'250px'}}/>
                     </UploadFile>
@@ -368,6 +412,24 @@ const UploadFile = styled.div`
         width: 100%;
         height: 100%;
         position: absolute;
+    }
+    #erase{
+        color:white;
+        background-color: rgb(220,53,69);
+        position:absolute;
+        right:5px;
+        border: 2px solid rgb(220,53,69);
+        border-radius: 5px;
+        bottom:5px;
+        padding: 4px 9px 4px 11px;
+        transition:.5s;
+        box-sizing: border-box;
+        font-weight: bolder;
+        :hover{
+            color:rgb(220,53,69);
+    background-color: white;
+    
+        }
     }
     label{
         width:100%;
@@ -440,7 +502,7 @@ const AreaTags = styled.div`
         border-radius: 5px;
         transition: .4s;
         :hover{
-            background-color:red;
+            background-color:lightgreen;
         }
     }
 }
@@ -458,6 +520,7 @@ const AreaHolder = styled.div`
         width:100%;
         height: 100px;
         box-sizing: border-box;
+        border: 0;
     }
     textarea#resumeText{
         height: 200px;
@@ -501,15 +564,14 @@ const Input = styled.div`
             display: flex;
             max-height:50px;
             overflow: auto;
-            border:1px solid black;
-            background-color:white;
+            background: #7ec5ff89;
             padding:0 3px 3px 3px;
             margin-right:5px;
             margin-top:5px;
             border-radius: 5px;
             transition: .4s;
         :hover{
-            background-color:red;
+            background-color:lightgreen;
         }
     }
 }

@@ -19,7 +19,6 @@ export function simpleSearch(query){
         return fetch(`${LOCALHOST}/recipes?name=${query}`)
         .then(response => response.json())
         .then(json =>{
-            console.log(json)
             dispatch({
                 type: SIMPLE_SEARCH,
                 payload: json
@@ -35,7 +34,7 @@ export function detailedSearch(id){
         .then(json =>{
             dispatch({
                 type: DETAILED_SEARCH,
-                payload: json.rec
+                payload: json
             })
         })
     }
@@ -113,7 +112,6 @@ export function currentPage(){
 }
 
 export function nextPage(renderedRecipes){
-    console.log(page)
     if((renderedRecipes-1)/page>1) return {
         type:NEXT_PAGE,
         payload:++page
@@ -125,7 +123,6 @@ export function nextPage(renderedRecipes){
 }
 
 export function previousPage(){
-    console.log(page)
     if(page===0){
         return{
             type:CURRENT_PAGE,

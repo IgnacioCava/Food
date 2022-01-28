@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import background from './restaurant.jpg'
-import waitress from './waitress.png'
+import backgroundRestaurant from './Props/restaurant.jpg'
+import waitress from './Props/waitress.png'
 
 
 export default function Welcome(){
@@ -75,7 +75,7 @@ export default function Welcome(){
 }
 
 const WelcomeWrapper = styled.div`
-    background-image: url(${background});
+    background-image: url(${backgroundRestaurant});
     display: flex;
     justify-content: center;
     align-items: center;
