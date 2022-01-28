@@ -24,9 +24,9 @@ describe('Api routes test', () => {
         agent.get('/recipes').expect(400)
     );
 
-    it('should return 400 if nothing is found with the received query', async () =>{
+    it('should return 404 if nothing is found with the received query', async () =>{
         const response = await agent.get('/recipes?name=asdasdasdasd');
-        expect(response.statusCode).to.equal(400);
+        expect(response.statusCode).to.equal(404);
     });
 
     it('should return 200 otherwise',  () =>{
@@ -42,9 +42,9 @@ describe('Api routes test', () => {
         expect(response.statusCode).to.equal(400);
       });
 
-    it('should return 400 if nothing is found with the given id', async () => {
+    it('should return 404 if nothing is found with the given id', async () => {
       const response = await agent.get('/recipes/asdhjaskdjasdk');
-      expect(response.statusCode).to.equal(400);
+      expect(response.statusCode).to.equal(404);
     });
 
     it('should return 200 otherwhise', async () => {
@@ -64,14 +64,14 @@ describe('Api routes test', () => {
   
   describe('POST /api/recipe', () => {  
     it('should return 400 if required any of the fields are null', async () => {
-      const res = await agent.post('/recipe').send({});
-      expect(res.statusCode).to.equal(400);
-      const res1 = await agent.post('/recipe').send({name: 'a'});
-      expect(res1.statusCode).to.equal(400);
+      const test1 = await agent.post('/recipe').send({});
+      expect(test1.statusCode).to.equal(400);
+      const test2 = await agent.post('/recipe').send({name: 'a'});
+      expect(test2.statusCode).to.equal(400);
     });  
-    it('should otherwise', async () => {
-      const res2 = await agent.post('/recipe').send({name: 'a', resume: 'abc', steps:['123'], dietTypes: ['vegan']});
-      expect(res2.statusCode).to.equal(200);
+    it('should return 200 otherwise', async () => {
+      const test3 = await agent.post('/recipe').send({name: 'a', resume: 'abc', steps:['123'], dietTypes: ['vegan']});
+      expect(test3.statusCode).to.equal(200);
     })  
   });
 });

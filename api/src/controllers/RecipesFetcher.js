@@ -8,7 +8,7 @@ const Op = Sequelize.Op; //Sequelize exposes symbol operators that can be used f
 
 async function fetchByApiQuery(query){
     try{
-        return await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&addRecipeInformation=true&apiKey=${API_KEY}&number=1`)
+        return await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&addRecipeInformation=true&apiKey=${API_KEY}&number=100`)
         .then(response => response.json())
         .then(json => {
             if(Object.keys(json).includes('totalResults')){
@@ -54,9 +54,7 @@ async function fetchByApiId(id){
                 healthScore: json.healthScore,
                 dishTypes: json.dishTypes,
                 steps: json.analyzedInstructions[0]?.steps.map(pos=>{
-                    
-                        return pos.step
-                    
+                    return pos.step  
                 })
             }
         })
@@ -70,28 +68,13 @@ async function fetchByDBQuery(query){
         where: {
             name: {[Op.iLike]: `%${query}%`} // Explanation at top of file
         },
-        // include: {
-        //     model: DietTypes,
-        //     attributes: ['name'],
-        //     through: {
-        //         attributes: [],
-        //     }
-        // }
     });
     if(rec.length) return rec
     return false
 }
 
 async function fetchByDBId(id){
-    const rec = await Recipes.findByPk(id//, {
-        // include: {
-        //     model: DietTypes,
-        //     attributes: ['name'],
-        //     through: {
-        //         attributes: [],
-        //     }
-        // }
-    /*}*/);
+    const rec = await Recipes.findByPk(id);
     
     if(Object.keys(rec).length) return rec
     return false

@@ -31,7 +31,7 @@ router.get('/', async (req,res)=>{
     
     DBRecipes?foundRecipes.push(DBRecipes):null
 
-    if(!foundRecipes.length) return res.status(400).json({message:'No recipes found'})
+    if(!foundRecipes.length) return res.status(404).json({message:'No recipes found'})
     
     else return res.status(200).json(foundRecipes.flat())
 })
@@ -44,16 +44,14 @@ router.get('/:id', async (req,res)=>{
 
     if(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id)){
         let rec = await fetchByDBId(id)
-        if(typeof rec === 'string') return res.status(400).json({message:'No recipe found matching received ID'})
+        if(!rec) return res.status(404).json({message:'No recipe found matching received ID'})
         else return res.status(200).send({rec})
     } else {
         let rec = await fetchByApiId(id)
-        if(typeof rec === 'string') return res.status(400).json({message:'No recipe found matching received ID'})
+        if(typeof rec === 'string') return res.status(404).json({message:'No recipe found matching received ID'})
         else {
             createDiet(rec.dietTypes)
-            return (
-                res.status(200).json({rec})
-                )
+            return res.status(200).json({rec})
         }
     }
 })
