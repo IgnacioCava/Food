@@ -8,7 +8,7 @@ const router = Router();
 router.post('/', async (req,res,next)=>{
     try {
         const { name, resume, dietTypes, score, healthScore, time, dishTypes, steps, image } = req.body
-
+        if(!name||!resume||!steps) return res.send(400)
         const createdRecipe = await Recipes.create({
             name, resume, dietTypes, score, healthScore, time, dishTypes, steps, image
         })

@@ -1,22 +1,33 @@
-const { Recipe, conn } = require('../../src/db.js');
+const { Recipes, conn } = require('../../src/db.js');
 const { expect } = require('chai');
 
-describe('Recipe model', () => {
+describe('Recipes model', () => {
   before(() => conn.authenticate()
     .catch((err) => {
       console.error('Unable to connect to the database:', err);
     }));
   describe('Validators', () => {
-    beforeEach(() => Recipe.sync({ force: true }));
+    //beforeEach(() => Recipes.sync({ force: true }));
     describe('name', () => {
-      it('should throw an error if name is null', (done) => {
-        Recipe.create({})
-          .then(() => done(new Error('It requires a valid name')))
-          .catch(() => done());
+      it('should throw an error if any of the required fields is null', (done) => {
+
+        Recipes.sync({ force: true })
+          .then(() => Recipes.create({name:'pasta', resume:'axcv'}))
+          .catch((err)=>{
+            done()
+          });
+
       });
-      it('should work when its a valid name', () => {
-        Recipe.create({ name: 'Milanesa a la napolitana' });
-      });
+
+      it('should work when no required fields are missing', (done) => {
+
+        Recipes.sync({ force: true })
+          .then(() => {
+            Recipes.create({name:'pasta', resume:'axcv', steps:['123']})
+            done()})
+          .catch((err)=>{});
+          
+        });
     });
   });
 });
