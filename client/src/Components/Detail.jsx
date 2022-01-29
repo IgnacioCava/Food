@@ -21,7 +21,8 @@ export default function Detail(){
 
     useEffect(()=>{
         let res = document.getElementById('resume')
-        if(res) res.innerHTML=thisDetail.resume
+        if(res) res.innerHTML=thisDetail.resume.replace(/(((src)+[\s\S]+(on))+\w*=+)*(href*[=:<>.])*(<script>*[\s\S]*<script\/>)*/g, '')
+        //In case someone tries to XSS me
         let steps=document.getElementsByClassName('step')
         Array.from(steps).forEach(step=>{
             step.addEventListener('mouseover',()=>{
