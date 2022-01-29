@@ -22,7 +22,7 @@ const { conn } = require('./src/db.js');
 const { DietTypes_Preloader } = require('./src/controllers/DietsFetcher.js')
 
 // Syncing all the models at once.
-conn.sync({ force: true }).then(() => {
+conn.sync(/*{ force: true }*/).then(() => {
   server.listen(3001, () => {
     DietTypes_Preloader()
     console.log('%s listening at 3001'); // eslint-disable-line no-console
