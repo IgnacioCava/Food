@@ -4,8 +4,7 @@ export const GET_DIET_TYPES='GET_DIET_TYPES'
 export const FILTER_BY_DIET_TYPE='FILTER_BY_DIET_TYPE'
 export const FILTER_BY_ALPHA='FILTER_BY_ALPHA'
 export const FILTER_BY_SCORE='FILTER_BY_SCORE'
-export const NEXT_PAGE='NEXT_PAGE'
-export const PREVIOUS_PAGE='PREVIOUS_PAGE'
+export const CHANGE_PAGE='CHANGE_PAGE'
 export const CURRENT_PAGE='CURRENT_PAGE'
 export const FILTER='FILTER'
 export const LOCALHOST = 'http://localhost:3001'
@@ -113,7 +112,7 @@ export function currentPage(){
 
 export function nextPage(renderedRecipes){
     if((renderedRecipes-1)/page>1) return {
-        type:NEXT_PAGE,
+        type:CHANGE_PAGE,
         payload:++page
     }
     else return{
@@ -130,7 +129,7 @@ export function previousPage(){
         }
     }
     else return{
-        type:PREVIOUS_PAGE,
+        type:CHANGE_PAGE,
         payload:--page
     }
 }

@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import { useSelector, useDispatch} from 'react-redux'
 import Recipe from './Recipe'
 import styled from 'styled-components'
-import { previousPage, nextPage, currentPage, filter } from '../Actions'
+import { previousPage, nextPage, currentPage } from '../Actions'
 
 export default function RecipesHolder(){
 
@@ -15,7 +15,6 @@ export default function RecipesHolder(){
 
     useEffect(()=>{
         if(!foundrecipes.message){ 
-            dispatch(filter('sortName', 'Ascending'))
             dispatch(currentPage())
         }
     },[dispatch, filteredRecipes, filteredDiets, foundrecipes.message])
@@ -36,6 +35,10 @@ export default function RecipesHolder(){
             document.getElementById('norec').style.opacity=1;
         }
     },[foundrecipes.message])
+
+    useEffect(()=>{
+        
+    }, [dispatch])
 
     if(recipes){
         return(

@@ -15,9 +15,13 @@ export default function Detail(){
     let {id} = useParams()
     if(!isNaN(id)) id=Number(id)
 
-    const thisDetail = useSelector(state=>state.currentRecipeDetail[0]?.rec)
+    useEffect(()=>{
+        detailedSearch(id)
+    }, [id])
+
+    const thisDetail = useSelector(state=>state.currentRecipeDetail.rec)
     const message = useSelector(state=>state.currentRecipeDetail[0]?.message)
-    if(!thisDetail&&!message) dispatch(detailedSearch(id))
+    if(!message) dispatch(detailedSearch(id))
 
     useEffect(()=>{
         let res = document.getElementById('resume')
@@ -39,6 +43,8 @@ export default function Detail(){
             })
         })
     })
+
+    
 
     if(thisDetail){
         return(

@@ -44,8 +44,14 @@ export default function Search(){
             <div>
                 <label>Sort by score</label>
                 <select id='sortScore' onClick={()=>handleSort('sortScore')}>
+                    <optgroup label="Score">
                     <option value="Ascending">▲ Ascending</option>
                     <option value="Descending">▼ Descending</option>
+                    </optgroup>
+                    <optgroup label="Health score">
+                    <option value="AscendingH">▲ Ascending</option>
+                    <option value="DescendingH">▼ Descending</option>
+                    </optgroup>
                 </select>
             </div>
         </Sorters>
