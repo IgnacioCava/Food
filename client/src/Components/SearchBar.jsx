@@ -14,8 +14,6 @@ export default function Search(){
             <form onSubmit={(event)=>{
                 event.preventDefault()
                 dispatch(simpleSearch(searchedRecipe))
-                if(document.getElementById('norec')) document.getElementById('norec').style.opacity='0'
-                
                 setSearched('')
             }}>
                 <SearchInput>
@@ -29,14 +27,6 @@ export default function Search(){
 }
 
 const SearchWrapper = styled.div`
-/* box-sizing: border-box;
-display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
-border-radius: 15px;
-overflow: hidden;
-margin-bottom:5px; */
 *{
     outline:none;
 }
@@ -50,7 +40,7 @@ const SearchInput = styled.div`
 display: flex;
 border-radius: 10px;
 overflow: hidden;
-margin: 10px;
+margin: 10px 0 10px 0;
     *{
         padding: 10px;
         background-color:white;

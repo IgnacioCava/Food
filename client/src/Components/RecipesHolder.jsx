@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import { useSelector, useDispatch} from 'react-redux'
 import Recipe from './Recipe'
 import styled from 'styled-components'
-import { previousPage, nextPage, currentPage } from '../Actions'
+import { previousPage, nextPage, currentPage, fetchPage } from '../Actions'
 
 export default function RecipesHolder(){
 
@@ -14,25 +14,32 @@ export default function RecipesHolder(){
     let recipes=useSelector(state=>state.currentPage)
 
     useEffect(()=>{
-        if(!foundrecipes.message){ 
-            dispatch(currentPage())
-        }
+        if(!foundrecipes.message) dispatch(currentPage())
     },[dispatch, filteredRecipes, filteredDiets, foundrecipes.message])
 
     useEffect(()=>{  
-        if(recipes.length){
-            document.getElementById('b').style.visibility='visible'
-            document.getElementById('a').style.visibility='visible'
-        } else{
-            document.getElementById('b').style.visibility='hidden'
-            document.getElementById('a').style.visibility='hidden'
+        let prev = document.getElementById('prev')
+        let next = document.getElementById('next')
+
+        if(prev&&document.getElementById('next')){
+            if(fetchPage()==='first')prev.style.visibility='hidden'
+            else prev.style.visibility='visible'
+
+            if(filteredDiets==='Unused' && fetchPage(filteredRecipes.length)==='last') next.style.visibility='hidden'
+            else if(fetchPage(filteredDiets.length)==='last') next.style.visibility='hidden'
+            else next.style.visibility='visible'
+            if(!recipes.length){
+                prev.style.visibility='hidden'
+                next.style.visibility='hidden'
+            }
         }
-    }, [recipes])
+    })
 
     useEffect(()=>{
-        if(document.getElementById('norec')) {
-            document.getElementById('norec').style.transition='0.3s';
-            document.getElementById('norec').style.opacity=1;
+        let norec = document.getElementById('norec')
+        if(foundrecipes.message&&norec) {
+            norec.style.transition='0.3s';
+            norec.style.opacity=1;
         }
     },[foundrecipes.message])
 
@@ -55,11 +62,12 @@ export default function RecipesHolder(){
                             )}
                         </Recipes>
                         <Paginator>
-                            <button type='button' id='a' onClick={()=>{
+                            <button type='button' id='prev' onClick={()=>{
                                 if(filteredDiets==='Nothing was found') return
                                 dispatch(previousPage())
+                                
                             }}>{'<'}</button>
-                            <button type='button' id='b' onClick={()=>{
+                            <button type='button' id='next' onClick={()=>{
                                 if(filteredDiets==='Nothing was found') return 
                                 if(filteredDiets==='Unused') dispatch(nextPage(filteredRecipes.length/9))
                                 else dispatch(nextPage(filteredDiets.length/9))
@@ -113,14 +121,14 @@ const Paginator = styled.div`
         font-weight: bold;
         font-size:large;
     }
-    #a{
+    #prev{
         left:0;
         border-radius:0 10px 0 0;
         :active{
             animation: paged .2s linear;
         }
     }
-    #b{
+    #next{
         right:0;
         border-radius:10px 0 0 0;
         :active{

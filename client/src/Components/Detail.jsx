@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import { detailedSearch } from '../Actions'
+import { detailedSearch, clear } from '../Actions'
 import { Link, useParams } from 'react-router-dom'
 import score from './Props/score.png'
 import hScore from './Props/healthScore.png'
@@ -15,13 +15,13 @@ export default function Detail(){
     let {id} = useParams()
     if(!isNaN(id)) id=Number(id)
 
-    useEffect(()=>{
-        detailedSearch(id)
-    }, [id])
+    // useEffect(()=>{
+    //     detailedSearch(id)
+    // }, [])
 
-    const thisDetail = useSelector(state=>state.currentRecipeDetail.rec)
+    const thisDetail = useSelector(state=>state.currentRecipeDetail[0]?.rec)
     const message = useSelector(state=>state.currentRecipeDetail[0]?.message)
-    if(!message) dispatch(detailedSearch(id))
+    if(!thisDetail&&!message) dispatch(detailedSearch(id))
 
     useEffect(()=>{
         let res = document.getElementById('resume')
@@ -112,7 +112,7 @@ export default function Detail(){
                     </Steps>
                 </DetailWays>
                 <ID>id: {id}</ID>
-                <Back><Link to='/home'>{'←'} Back</Link></Back>
+                <Back><Link to='/home' onClick={()=>dispatch(clear())}>{'←'} Back</Link></Back>
             </DetailWrapper>
             </Background>
         )
@@ -121,7 +121,7 @@ export default function Detail(){
             <DetailWrapper>
                 <NoBack>
                     <h1>Sorry, we couldn't find what you're searching for!</h1>
-                    <Link to='/home'>Return home</Link>
+                    <Link to='/home' onClick={()=>dispatch(clear())}>Return home</Link>
                 </NoBack>
             </DetailWrapper>
         </Background>

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getDietTypes, filter, currentPage } from "../Actions"
 import styled from "styled-components";
 
-export default function Search(){
+export default function Indexer(){
 
     const dispatch = useDispatch()
     
@@ -61,27 +61,30 @@ export default function Search(){
 const Sorters = styled.div`
     display: flex;
     flex-direction: row;
-    width: available;
+    width: fit-content;
     label{
         font-weight: bold;
         color:white;
     }
     div{
-        margin:5px;
         display: flex;
         flex-direction: column;
+        margin:5px;
+        width: 33%;
     }
     option, select{
         background-color: #464646;
         color:white;
         padding:10px;
+        width: 100%;
         border-radius: 10px;
         outline:none;
         cursor:pointer;
     }
-    @media (max-width:430px){
+    @media (max-width:400px){
         option, select{
-        padding: 5px 0 5px 0 ;
+        //padding: 5px;
+        border-radius: 7px;
     }
 }
 `

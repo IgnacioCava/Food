@@ -1,5 +1,5 @@
 import { SIMPLE_SEARCH, DETAILED_SEARCH, GET_DIET_TYPES, FILTER_BY_DIET_TYPE,
-    FILTER_BY_ALPHA, FILTER_BY_SCORE, CHANGE_PAGE, CURRENT_PAGE } from '../Actions'
+    FILTER_BY_ALPHA, FILTER_BY_SCORE, CHANGE_PAGE, CURRENT_PAGE, CLEAR } from '../Actions'
 
 const initialState = {
     foundRecipes: [],
@@ -16,7 +16,7 @@ export default function reducer(state=initialState, action){
             return {...state, foundRecipes: action.payload, filteredRecipes: action.payload, filteredDiets:'Unused',}
 
         case DETAILED_SEARCH:
-            return {...state, currentRecipeDetail: action.payload}
+            return {...state, currentRecipeDetail: [action.payload]}
 
         case GET_DIET_TYPES:
             return {...state, dietTypes:action.payload.map(diet=>diet.name)}
@@ -129,6 +129,9 @@ export default function reducer(state=initialState, action){
             if(Array.isArray(state.filteredDiets)) return {...state, currentPage:state.filteredDiets.slice(action.payload*9,action.payload*9+9)}
             if(state.filteredRecipes.length) return {...state, currentPage: state.filteredRecipes.slice(action.payload*9,action.payload*9+9)}
             else return {...state, currentPage: state.foundRecipes.slice(action.payload*9,action.payload*9+9)}
+
+        case CLEAR:
+            return {...state, currentRecipeDetail:[]}
 
         default:
             return state

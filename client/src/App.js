@@ -58,7 +58,7 @@ export default App;
 
 const Create = styled.div`
   background-color:lightgreen;
-  padding:20px;
+  padding:15px;
   border-radius:10px;
   z-index: 2;
   cursor:pointer;

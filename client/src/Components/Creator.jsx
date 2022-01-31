@@ -24,7 +24,7 @@ export default function Creator(){
 
     useEffect(()=>{
         console.log(recData)
-    })
+    }, [recData])
 
     const [errors, setErrors] = useState('')
 
@@ -50,14 +50,15 @@ export default function Creator(){
             }
             return
         }
-        document.getElementById(type).style.transition='.2s'
-        document.getElementById(type).style.backgroundColor='red'
+        let thisType = document.getElementById(type)
+        thisType.style.transition='.2s'
+        thisType.style.backgroundColor='red'
         errortag.style.width='300px'
         errortag.style.borderLeft='10px solid red'
         
         setTimeout(()=>{
-            document.getElementById(type).style.transition='1s'
-            document.getElementById(type).style.backgroundColor='white'
+            thisType.style.transition='1s'
+            thisType.style.backgroundColor='white'
         },500)
         setTimeout(()=>{
             if(errortag){
@@ -118,12 +119,13 @@ export default function Creator(){
             return false
         }
         setErrors('Recipe created')
-        document.getElementById('error').style.width='150px'
-        document.getElementById('error').style.borderLeft='10px solid green'
+        let errortag=document.getElementById('error')
+        errortag.style.width='150px'
+        errortag.style.borderLeft='10px solid green'
         setTimeout(()=>{
-            if(document.getElementById('error')){
-                document.getElementById('error').style.border='0px solid green'
-                document.getElementById('error').style.width='0px'
+            if(errortag){
+                errortag.style.border='0px solid green'
+                errortag.style.width='0px'
             }
         },2000)
         return true
@@ -164,12 +166,13 @@ export default function Creator(){
                                         if(formValidate()) {
                                             document.getElementById('created').volume=.25
                                             document.getElementById('created').play()
+                                            setRecData({...recData, resume: recData.resume.replace(/(((src)+[\s\S]+(on))+\w*=+)*(href*[=:<>.])*(<script>*[\s\S]*<script\/>)*/g, '')})
                                             dispatch(createRecipe(recData))
                                             }}}>
                     
                     <InputHolder>
                         <label>Title</label>
-                        <input type="text" name='name' id='title' value={recData.name} onChange={handleInputChange}/>
+                        <input type="text" style={{border: '1px solid rgb(118, 118, 118)'}} name='name' id='title' value={recData.name} onChange={handleInputChange}/>
                     </InputHolder>
                     
                     <AreaHolder>
@@ -188,11 +191,12 @@ export default function Creator(){
                                     event.target.value=''
                                 }
                                 else {
-                                    document.getElementById('dietTypes').style.transition='.2s'
-                                    document.getElementById('dietTypes').style.backgroundColor='red'
+                                    let dietTypes=document.getElementById('dietTypes')
+                                    dietTypes.style.transition='.2s'
+                                    dietTypes.style.backgroundColor='red'
                                     setTimeout(()=>{
-                                        document.getElementById('dietTypes').style.transition='1s'
-                                        document.getElementById('dietTypes').style.backgroundColor='white'
+                                        dietTypes.style.transition='1s'
+                                        dietTypes.style.backgroundColor='white'
                                     },500)
                                     event.target.value=''
                                 }
@@ -216,11 +220,12 @@ export default function Creator(){
                                     event.target.value=''
                                 }
                                 else {
-                                    document.getElementById('dishTypes').style.transition='.2s'
-                                    document.getElementById('dishTypes').style.backgroundColor='red'
+                                    let dishTypes = document.getElementById('dishTypes')
+                                    dishTypes.style.transition='.2s'
+                                    dishTypes.style.backgroundColor='red'
                                     setTimeout(()=>{
-                                        document.getElementById('dishTypes').style.transition='1s'
-                                        document.getElementById('dishTypes').style.backgroundColor='white'
+                                        dishTypes.style.transition='1s'
+                                        dishTypes.style.backgroundColor='white'
                                     },500)
                                     event.target.value=''
                                 }
@@ -358,19 +363,20 @@ export default function Creator(){
 
                     <AreaHolder onKeyPress={event=>{
                         if(event.key === 'Enter'){
+                            let steptags=document.getElementById('steptags')
                             if(validate(event.target.value, recData.steps)){
                                 handleInputChange(event)
                                 let span = document.createElement('span')
                                 span.innerText= 'Step '+(recData.steps.length+1)+': '+event.target.value.replaceAll('\n', '')
-                                document.getElementById('steptags').prepend(span)
+                                steptags.prepend(span)
                                 event.target.value=''
                             }
                             else {
-                                document.getElementById('steptags').style.transition='.2s'
-                                document.getElementById('steptags').style.backgroundColor='red'
+                                steptags.style.transition='.2s'
+                                steptags.style.backgroundColor='red'
                                 setTimeout(()=>{
-                                    document.getElementById('steptags').style.transition='1s'
-                                    document.getElementById('steptags').style.backgroundColor='white'
+                                    steptags.style.transition='1s'
+                                    steptags.style.backgroundColor='white'
                                 },500)
                                 event.target.value=''
                             }
@@ -558,8 +564,9 @@ const Input = styled.div`
     }
     div{
         display: flex;
-        flex-direction: row;
         flex-wrap: wrap;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
         span{
             display: flex;
             max-height:50px;

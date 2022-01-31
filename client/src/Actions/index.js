@@ -7,6 +7,7 @@ export const FILTER_BY_SCORE='FILTER_BY_SCORE'
 export const CHANGE_PAGE='CHANGE_PAGE'
 export const CURRENT_PAGE='CURRENT_PAGE'
 export const FILTER='FILTER'
+export const CLEAR='CLEAR'
 export const LOCALHOST = 'http://localhost:3001'
 
 
@@ -131,5 +132,16 @@ export function previousPage(){
     else return{
         type:CHANGE_PAGE,
         payload:--page
+    }
+}
+
+export function fetchPage(renderedRecipes){
+    if(page===0) return 'first'
+    if((renderedRecipes/(page-1))<=9) return 'last'
+}
+
+export function clear(){
+    return {
+        type: CLEAR
     }
 }
