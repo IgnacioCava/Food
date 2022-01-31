@@ -136,8 +136,10 @@ export function previousPage(){
 }
 
 export function fetchPage(renderedRecipes){
+    if(renderedRecipes)console.log(renderedRecipes)
+    if(page===0 && renderedRecipes<10) return 'only'
     if(page===0) return 'first'
-    if((renderedRecipes/(page-1))<=9) return 'last'
+    if(renderedRecipes/(page+1)<=9) return 'last'
 }
 
 export function clear(){

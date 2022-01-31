@@ -25,8 +25,10 @@ function App() {
             <AppWrapper>
               <Controls>
                 <Indexer/>
-                <SearchBar/>
-                <Create><Link to='/create'>Create recipe</Link></Create>
+                <One>
+                  <SearchBar/>
+                  <Create><Link to='/create'>Create recipe</Link></Create>
+                </One>
               </Controls>
               <RecipesHolder/>
             </AppWrapper>}
@@ -43,8 +45,12 @@ function App() {
           <AppWrapper>
             <Controls>
               <Indexer/>
-              <SearchBar/>
-              <Create><Link to='/create'>Create recipe</Link></Create>
+              <One>
+                <SearchBar/>
+                
+                  <Create><Link to='/create'>Create recipe</Link></Create>
+                
+              </One>
             </Controls>
             <RecipesHolder/>
           </AppWrapper>
@@ -57,20 +63,29 @@ function App() {
 export default App;
 
 const Create = styled.div`
-  background-color:lightgreen;
-  padding:15px;
-  border-radius:10px;
-  z-index: 2;
-  cursor:pointer;
-  @media (max-width:850px){
-    position: fixed;
-    bottom:5px;
-  }
   a{
+    background-color:lightgreen;
+  padding:16px;
+  border-radius:10px 0 0 10px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  line-height: 10px;
+  cursor:pointer;
     text-decoration: none;
     color: black;
     font-weight:bold;
   }
+`
+
+const One = styled.div`
+display: flex;
+flex-direction: row-reverse;
+align-items: center;
+#create{
+  
+  
+}
 `
 
 const AppWrapper = styled.div`

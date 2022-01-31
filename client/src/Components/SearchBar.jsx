@@ -17,7 +17,7 @@ export default function Search(){
                 setSearched('')
             }}>
                 <SearchInput>
-                    <input type="text" value={searchedRecipe} onChange={(recipe) => setSearched(recipe.target.value)}/>
+                    <input type="text" placeholder='Search for a recipe' value={searchedRecipe} onChange={(recipe) => setSearched(recipe.target.value)}/>
                     <input type="image" id='submit' src={mag} alt='search' style={{height:'22px',width:'22px'}}/>
                 </SearchInput>
                 
@@ -28,7 +28,7 @@ export default function Search(){
 
 const SearchWrapper = styled.div`
 *{
-    outline:none;
+    
 }
 form{
     padding:0;
@@ -38,19 +38,23 @@ form{
 
 const SearchInput = styled.div`
 display: flex;
-border-radius: 10px;
+border-radius: 0 10px 10px 0;
 overflow: hidden;
 margin: 10px 0 10px 0;
     *{
         padding: 10px;
         background-color:white;
         border:0;
+        outline:none;
     }
     #submit{
         transition: .3s;
         font-weight:bold;
-        :hover{
+        :target, :hover{
             background-color: #62e462;
         }
+        /* :hover{
+            background-color: #62e462;
+        } */
     }
 `

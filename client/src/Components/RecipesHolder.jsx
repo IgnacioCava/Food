@@ -8,26 +8,33 @@ export default function RecipesHolder(){
 
     const dispatch=useDispatch()
 
-    let foundrecipes=useSelector(state=>state.foundRecipes)
     let filteredRecipes=useSelector(state=>state.filteredRecipes)
     let filteredDiets=useSelector(state=>state.filteredDiets)
     let recipes=useSelector(state=>state.currentPage)
 
     useEffect(()=>{
-        if(!foundrecipes.message) dispatch(currentPage())
-    },[dispatch, filteredRecipes, filteredDiets, foundrecipes.message])
+        if(!filteredRecipes.message) dispatch(currentPage())
+    },[dispatch, filteredRecipes, filteredDiets])
 
     useEffect(()=>{  
         let prev = document.getElementById('prev')
         let next = document.getElementById('next')
 
-        if(prev&&document.getElementById('next')){
+        if(prev&&next){
             if(fetchPage()==='first')prev.style.visibility='hidden'
             else prev.style.visibility='visible'
 
-            if(filteredDiets==='Unused' && fetchPage(filteredRecipes.length)==='last') next.style.visibility='hidden'
-            else if(fetchPage(filteredDiets.length)==='last') next.style.visibility='hidden'
-            else next.style.visibility='visible'
+            if(filteredDiets==='Unused') {
+                if(fetchPage(filteredRecipes.length)==='last') next.style.visibility='hidden'
+                else next.style.visibility='visible'
+            }
+            else {
+                if(fetchPage(filteredDiets.length)==='last') next.style.visibility='hidden'
+                if(fetchPage(filteredDiets.length)==='only') {
+                    prev.style.visibility='hidden'
+                    next.style.visibility='hidden'
+                }
+            }
             if(!recipes.length){
                 prev.style.visibility='hidden'
                 next.style.visibility='hidden'
@@ -37,11 +44,11 @@ export default function RecipesHolder(){
 
     useEffect(()=>{
         let norec = document.getElementById('norec')
-        if(foundrecipes.message&&norec) {
+        if(filteredRecipes.message&&norec) {
             norec.style.transition='0.3s';
             norec.style.opacity=1;
         }
-    },[foundrecipes.message])
+    },[filteredRecipes.message])
 
     useEffect(()=>{
         
@@ -49,11 +56,11 @@ export default function RecipesHolder(){
 
     if(recipes){
         return(
-            <Holder>
-                {foundrecipes.message
-                    ?<NoRec id='norec'>{foundrecipes.message}</NoRec>
+            <Holder id='rec'>
+                {filteredRecipes.message
+                    ?<NoRec id='norec'>{filteredRecipes.message}</NoRec>
                     :<>
-                        <Recipes>
+                        <Recipes id='rec'>
                             {recipes.map(recipe=>
                                 <Recipe
                                     key={recipe.id}
@@ -65,7 +72,6 @@ export default function RecipesHolder(){
                             <button type='button' id='prev' onClick={()=>{
                                 if(filteredDiets==='Nothing was found') return
                                 dispatch(previousPage())
-                                
                             }}>{'<'}</button>
                             <button type='button' id='next' onClick={()=>{
                                 if(filteredDiets==='Nothing was found') return 
@@ -143,8 +149,8 @@ const Recipes = styled.div`
     align-content: flex-start;
     justify-content: flex-start;
     width: 100%;
-    @media (max-width:850px){
-        justify-content: center
+    @media (max-width:800px) {
+        justify-content: center;
     }
 `
 
@@ -154,12 +160,10 @@ const Holder = styled.div`
     flex-wrap: wrap;
     justify-content: flex-start;
     width:100%;
-    
-    /*  */
     p {
         margin:0;
     }
-    @media (max-width:850px){
+    @media (max-width:800px){
         margin-bottom: 80px;
         
     }

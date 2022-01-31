@@ -81,10 +81,10 @@ const Sorters = styled.div`
         outline:none;
         cursor:pointer;
     }
-    @media (max-width:400px){
+    @media (max-width:450px){
         option, select{
-        //padding: 5px;
         border-radius: 7px;
+        padding:10px 0 10px 0;
     }
 }
 `
