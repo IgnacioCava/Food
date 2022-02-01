@@ -40,7 +40,7 @@ export default function Creator(){
     function animateError(type){
         let errortag=document.getElementById('error')
         if(!type){
-            errortag.style.width='250px'
+            errortag.style.width='300px'
             errortag.style.borderLeft='10px solid red'
             if(errortag){
                 setTimeout(()=>{
@@ -53,7 +53,7 @@ export default function Creator(){
         let thisType = document.getElementById(type)
         thisType.style.transition='.2s'
         thisType.style.backgroundColor='red'
-        errortag.style.width='300px'
+        errortag.style.width='350px'
         errortag.style.borderLeft='10px solid red'
         
         setTimeout(()=>{
