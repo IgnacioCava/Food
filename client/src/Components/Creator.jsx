@@ -53,7 +53,7 @@ export default function Creator(){
         let thisType = document.getElementById(type)
         thisType.style.transition='.2s'
         thisType.style.backgroundColor='red'
-        errortag.style.width='350px'
+        errortag.style.width='300px'
         errortag.style.borderLeft='10px solid red'
         
         setTimeout(()=>{
@@ -304,8 +304,8 @@ export default function Creator(){
                             console.log(event.target.files[0])
                             if(!event.target.files[0]) return
                             if(event.target.files[0]?.type.includes('image')){//I can imagine this being easily sidestepped, but whatever
-                                if(event.target.files[0]?.size>500000){
-                                    setErrors('The file is too heavy')
+                                if(event.target.files[0]?.size>=500000){
+                                    setErrors('Max file size: 500KB')
                                     animateError('uploadfile')
                                     return
                                 }
@@ -527,6 +527,7 @@ const AreaHolder = styled.div`
         height: 100px;
         box-sizing: border-box;
         border: 0;
+        border-bottom:1px solid grey;
     }
     textarea#resumeText{
         height: 200px;
